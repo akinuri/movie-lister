@@ -179,11 +179,16 @@ async function main() {
         process.stdout.write(`Fetching: ${movie.title}${movie.year ? ` (${movie.year})` : ""} ... `);
 
         try {
+            // Build the OMDb URL for manual check
+            const params = new URLSearchParams({ t: movie.title, apikey: args.apiKey });
+            if (movie.year) params.set("y", movie.year);
+            const omdbUrl = `https://www.omdbapi.com/?${params.toString()}`;
+
             const data = await fetchOmdbByTitle(movie.title, movie.year, args.apiKey);
 
             if (!data) {
                 failed += 1;
-                process.stdout.write("not found\n");
+                process.stdout.write(`not found\n  ${omdbUrl}\n`);
                 continue;
             }
 
