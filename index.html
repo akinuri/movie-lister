@@ -29,7 +29,7 @@
 <body class="min-h-screen bg-[hsl(37_39%_87%)] text-[hsl(30_13%_10%)] pb-[calc(4rem_+_5vh)] transition-colors duration-200 dark:bg-[hsl(220_18%_12%)] dark:text-[hsl(43_33%_92%)]">
     <main class="min-h-screen w-full">
         <div class="min-h-screen">
-            <aside id="filtersAside" class="sticky top-8 z-20 mx-4 mt-4 mb-4 rounded-xl border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%/0.72)] px-3 pb-3 pt-3 shadow-[0_4px_10px_hsl(32_58%_13%/0.12)] backdrop-blur-md transition-colors duration-200 dark:border-[hsl(220_16%_27%)] dark:bg-[hsl(222_20%_16%/0.85)] dark:shadow-[0_4px_14px_hsl(220_45%_5%/0.45)] md:mx-8 md:mt-8 md:mb-8 md:px-5 md:pb-5 md:pt-4" aria-label="Filters">
+            <aside id="filtersAside" class="sticky top-8 z-20 mx-4 mt-4 mb-4 rounded-xl border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%/0.72)] px-3 pb-3 pt-3 shadow-[0_4px_10px_hsl(32_58%_13%/0.12)] backdrop-blur-md transition-all duration-500 ease-in-out dark:border-[hsl(220_16%_27%)] dark:bg-[hsl(222_20%_16%/0.85)] dark:shadow-[0_4px_14px_hsl(220_45%_5%/0.45)] md:mx-8 md:mt-8 md:mb-8 md:px-5 md:pb-5 md:pt-4" aria-label="Filters">
                 <section class="flex flex-wrap items-end justify-center gap-4">
                     <div id="filtersControlsGroup" class="flex w-full min-w-0 flex-wrap items-end gap-3 lg:w-auto lg:flex-none lg:min-w-0 lg:flex-nowrap">
                         <div id="searchControl" class="flex w-full flex-col gap-1.5 lg:w-[22rem]">
@@ -133,6 +133,7 @@
 
         const layoutState = {
             filtersResizeObserver: null,
+            lastScrollY: window.scrollY,
         };
 
         function getSystemMode() {
@@ -152,6 +153,7 @@
             document.documentElement.classList.toggle("dark", resolved === "dark");
             themeState.mode = mode;
             updateThemeToggleLabel();
+            updateFiltersShadow();
         }
 
         function updateThemeToggleLabel() {
@@ -210,6 +212,62 @@
             refs.countControl.style.marginBottom = isColumn ? "0" : "0.5rem";
         }
 
+        function updateFiltersShadow() {
+            const isAtTop = window.scrollY <= 8;
+            const isDark = document.documentElement.classList.contains("dark");
+
+            if (isDark) {
+                refs.filtersAside.style.boxShadow = isAtTop
+                    ? "0 1px 4px hsl(220 45% 5% / 0.18)"
+                    : "0 10px 26px hsl(220 45% 5% / 0.58)";
+                return;
+            }
+
+            refs.filtersAside.style.boxShadow = isAtTop
+                ? "0 1px 4px hsl(32 58% 13% / 0.08)"
+                : "0 10px 24px hsl(32 58% 13% / 0.2)";
+        }
+
+        function updateFiltersScrollVisibility(forceShow = false) {
+            const isStickyEnabled = window.innerWidth >= WIDTH_TOGGLE_MIN_VIEWPORT;
+            const currentScrollY = window.scrollY;
+
+            if (!isStickyEnabled || forceShow) {
+                refs.filtersAside.style.transform = "translateY(0)";
+                refs.filtersAside.style.opacity = "1";
+                refs.filtersAside.style.pointerEvents = "auto";
+                updateFiltersShadow();
+                layoutState.lastScrollY = currentScrollY;
+                return;
+            }
+
+            if (currentScrollY <= 8) {
+                refs.filtersAside.style.transform = "translateY(0)";
+                refs.filtersAside.style.opacity = "1";
+                refs.filtersAside.style.pointerEvents = "auto";
+                updateFiltersShadow();
+                layoutState.lastScrollY = currentScrollY;
+                return;
+            }
+
+            const scrollingDown = currentScrollY > layoutState.lastScrollY + 14;
+            const scrollingUp = currentScrollY < layoutState.lastScrollY - 14;
+
+            if (scrollingDown && currentScrollY > 180) {
+                refs.filtersAside.style.transform = "translateY(calc(-100% - 1rem))";
+                refs.filtersAside.style.opacity = "0";
+                refs.filtersAside.style.pointerEvents = "none";
+            } else if (scrollingUp) {
+                refs.filtersAside.style.transform = "translateY(0)";
+                refs.filtersAside.style.opacity = "1";
+                refs.filtersAside.style.pointerEvents = "auto";
+            }
+
+            updateFiltersShadow();
+
+            layoutState.lastScrollY = currentScrollY;
+        }
+
         function applyGridWidth(mode) {
             widthState.mode = mode;
             const effectiveMode = getEffectiveGridWidthMode();
@@ -225,6 +283,7 @@
             refs.filtersAside.style.position = isStickyEnabled ? "sticky" : "static";
             refs.filtersAside.style.top = isStickyEnabled ? "2rem" : "auto";
             updateFiltersControlsLayout();
+            updateFiltersScrollVisibility(true);
 
             updateWidthToggleLabel();
         }
@@ -254,6 +313,10 @@
 
             window.addEventListener("resize", () => {
                 applyGridWidth(widthState.mode);
+            });
+
+            window.addEventListener("scroll", () => {
+                updateFiltersScrollVisibility();
             });
 
             refs.widthToggle.addEventListener("click", () => {
