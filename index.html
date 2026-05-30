@@ -29,7 +29,7 @@
 <body class="min-h-screen bg-[hsl(37_39%_87%)] text-[hsl(30_13%_10%)] pb-[calc(4rem_+_5vh)] transition-colors duration-200 dark:bg-[hsl(220_18%_12%)] dark:text-[hsl(43_33%_92%)]">
     <main class="min-h-screen w-full">
         <div class="min-h-screen">
-            <aside id="filtersAside" class="sticky top-8 z-20 mx-8 mt-8 mb-8 rounded-xl border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%/0.72)] px-4 pb-4 pt-3 shadow-[0_4px_10px_hsl(32_58%_13%/0.12)] backdrop-blur-md transition-colors duration-200 dark:border-[hsl(220_16%_27%)] dark:bg-[hsl(222_20%_16%/0.85)] dark:shadow-[0_4px_14px_hsl(220_45%_5%/0.45)] md:px-5 md:pb-5 md:pt-4" aria-label="Filters">
+            <aside id="filtersAside" class="sticky top-8 z-20 mx-4 mt-4 mb-4 rounded-xl border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%/0.72)] px-3 pb-3 pt-3 shadow-[0_4px_10px_hsl(32_58%_13%/0.12)] backdrop-blur-md transition-colors duration-200 dark:border-[hsl(220_16%_27%)] dark:bg-[hsl(222_20%_16%/0.85)] dark:shadow-[0_4px_14px_hsl(220_45%_5%/0.45)] md:mx-8 md:mt-8 md:mb-8 md:px-5 md:pb-5 md:pt-4" aria-label="Filters">
                 <section class="flex flex-wrap items-end justify-center gap-4">
                     <div id="filtersControlsGroup" class="flex w-full min-w-0 flex-wrap items-end gap-3 lg:w-auto lg:flex-none lg:min-w-0 lg:flex-nowrap">
                         <div id="searchControl" class="flex w-full flex-col gap-1.5 lg:w-[22rem]">
@@ -85,7 +85,7 @@
             </aside>
 
             <section>
-                <section id="grid" class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8 p-8 sm:grid-cols-[repeat(auto-fill,minmax(360px,1fr))]" aria-label="Movie cards"></section>
+                <section id="grid" class="grid grid-cols-2 gap-6 p-6 sm:gap-7 sm:p-7 md:gap-8 md:p-8 md:grid-cols-[repeat(auto-fill,minmax(max(300px,calc((100%_-_14rem)/8)),1fr))]" aria-label="Movie cards"></section>
                 <div id="emptyState" class="px-4 py-10 text-center text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_14%_72%)]" hidden>No movies match the current filters.</div>
             </section>
         </div>
@@ -214,11 +214,14 @@
             widthState.mode = mode;
             const effectiveMode = getEffectiveGridWidthMode();
             const isStickyEnabled = window.innerWidth >= WIDTH_TOGGLE_MIN_VIEWPORT;
-            refs.grid.classList.add("p-8");
+            const fullModeInlineMargin = window.innerWidth < 640 ? "1rem" : "2rem";
+            const gridStyles = window.getComputedStyle(refs.grid);
+            const gridPadX = Number.parseFloat(gridStyles.paddingLeft || "0") + Number.parseFloat(gridStyles.paddingRight || "0");
+
             refs.grid.style.maxWidth = effectiveMode === "boxed" ? "75vw" : "none";
-            refs.grid.style.marginInline = effectiveMode === "boxed" ? "auto" : "0";
-            refs.filtersAside.style.maxWidth = effectiveMode === "boxed" ? "75vw" : "none";
-            refs.filtersAside.style.marginInline = effectiveMode === "boxed" ? "auto" : "2rem";
+            refs.grid.style.marginInline = "auto";
+            refs.filtersAside.style.maxWidth = effectiveMode === "boxed" ? `calc(75vw - ${gridPadX}px)` : "none";
+            refs.filtersAside.style.marginInline = effectiveMode === "boxed" ? "auto" : fullModeInlineMargin;
             refs.filtersAside.style.position = isStickyEnabled ? "sticky" : "static";
             refs.filtersAside.style.top = isStickyEnabled ? "2rem" : "auto";
             updateFiltersControlsLayout();
@@ -469,7 +472,7 @@
                         </div>
                         <div class="flex items-center gap-2" title="${escapeHtml(movie.Actors || "Actors unavailable")}">
                             <span class="shrink-0 text-[0.9rem] text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">Stars:</span>
-                            <div class="no-scrollbar flex min-w-0 flex-1 flex-wrap items-center gap-2" style="-ms-overflow-style:none;scrollbar-width:none;">${actorPills}</div>
+                            <div class="no-scrollbar flex min-w-0 flex-1 flex-nowrap items-center gap-2 overflow-x-auto whitespace-nowrap" style="-ms-overflow-style:none;scrollbar-width:none;">${actorPills}</div>
                         </div>
                         <div class="flex flex-wrap gap-2">${genres}</div>
                         <p class="m-0 text-[0.95rem] leading-[1.45] text-[hsl(30_14%_24%)] dark:text-[hsl(40_16%_82%)]" title="${fullPlot}" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${plot}</p>
