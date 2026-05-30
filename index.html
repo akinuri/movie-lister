@@ -741,6 +741,20 @@
             render();
         }
 
+        function formatRuntime(runtimeStr) {
+            if (!runtimeStr || runtimeStr === "N/A") return "Unknown runtime";
+            const match = runtimeStr.match(/(\d+)\s*min/i);
+            if (!match) return runtimeStr;
+            const mins = parseInt(match[1], 10);
+            if (!Number.isFinite(mins)) return runtimeStr;
+            const h = Math.floor(mins / 60);
+            const m = mins % 60;
+            let result = "";
+            if (h > 0) result += `${h}h`;
+            if (m > 0 || h === 0) result += `${h > 0 ? " " : ""}${m}m`;
+            return result.trim();
+        }
+
         function cardTemplate(movie) {
             // Global info visibility state
             const infoVisible = state.allInfoVisible !== false;
@@ -758,7 +772,7 @@
             const hasVotes = /^\d+$/.test(votesDigits);
             const votes = hasVotes ? formatCompactCount(Number(votesDigits)) : "";
             const ratingWithVotes = hasVotes ? `${escapeHtml(rating)} (${escapeHtml(votes)})` : escapeHtml(rating);
-            const runtime = movie.Runtime && movie.Runtime !== "N/A" ? movie.Runtime : "Unknown runtime";
+            const runtime = formatRuntime(movie.Runtime);
             const year = movie.Year || "Unknown year";
             const title = escapeHtml(movie.Title || "Untitled");
             const fullPlot = escapeHtml(movie.Plot || "No plot available.");
