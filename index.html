@@ -37,18 +37,32 @@
                             <input id="searchInput" type="text" placeholder="Try: hemsworth, ambulance, nicolai" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:placeholder:text-[hsl(38_12%_63%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" />
                         </div>
 
-                        <div id="genreControl" class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-48 xl:w-56">
-                            <label for="genreSelect" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Genre</label>
-                            <select id="genreSelect" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]">
-                                <option value="">All genres</option>
-                            </select>
+                        <div id="genreControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-48 xl:w-56">
+                            <label for="genreToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Genre</label>
+                            <button id="genreToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select genres" aria-expanded="false">
+                                <span id="genreToggleLabel" class="truncate">All</span>
+                                <span class="text-xs opacity-70">▼</span>
+                            </button>
+                            <div id="genrePanel" class="hidden absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
+                                <div class="mb-2 flex items-center justify-end">
+                                    <button id="genreClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] transition hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
+                                </div>
+                                <div id="genreOptions" class="max-h-56 space-y-1 overflow-y-auto pr-1"></div>
+                            </div>
                         </div>
 
-                        <div id="yearControl" class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-32 xl:w-40">
-                            <label for="yearSelect" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Year</label>
-                            <select id="yearSelect" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]">
-                                <option value="">All years</option>
-                            </select>
+                        <div id="yearControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-32 xl:w-40">
+                            <label for="yearToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Year</label>
+                            <button id="yearToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select years" aria-expanded="false">
+                                <span id="yearToggleLabel" class="truncate">All</span>
+                                <span class="text-xs opacity-70">▼</span>
+                            </button>
+                            <div id="yearPanel" class="hidden absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
+                                <div class="mb-2 flex items-center justify-end">
+                                    <button id="yearClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] transition hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
+                                </div>
+                                <div id="yearOptions" class="max-h-56 space-y-1 overflow-y-auto pr-1"></div>
+                            </div>
                         </div>
 
                         <div id="sortControl" class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-48 xl:w-56">
@@ -99,8 +113,16 @@
 
         const refs = {
             searchInput: document.getElementById("searchInput"),
-            genreSelect: document.getElementById("genreSelect"),
-            yearSelect: document.getElementById("yearSelect"),
+            genreToggle: document.getElementById("genreToggle"),
+            genreToggleLabel: document.getElementById("genreToggleLabel"),
+            genrePanel: document.getElementById("genrePanel"),
+            genreOptions: document.getElementById("genreOptions"),
+            genreClear: document.getElementById("genreClear"),
+            yearToggle: document.getElementById("yearToggle"),
+            yearToggleLabel: document.getElementById("yearToggleLabel"),
+            yearPanel: document.getElementById("yearPanel"),
+            yearOptions: document.getElementById("yearOptions"),
+            yearClear: document.getElementById("yearClear"),
             sortSelect: document.getElementById("sortSelect"),
             themeToggle: document.getElementById("themeToggle"),
             widthToggle: document.getElementById("widthToggle"),
@@ -127,6 +149,13 @@
 
         const widthState = {
             mode: "boxed",
+        };
+
+        const filterState = {
+            genres: [],
+            years: [],
+            selectedGenres: new Set(),
+            selectedYears: new Set(),
         };
 
         const WIDTH_TOGGLE_MIN_VIEWPORT = 1400;
@@ -210,6 +239,162 @@
             refs.countControl.style.width = isColumn ? "100%" : "90px";
             refs.countControl.style.marginLeft = isColumn ? "0" : "1rem";
             refs.countControl.style.marginBottom = isColumn ? "0" : "0.5rem";
+        }
+
+        function closeFilterPanels() {
+            refs.genrePanel.classList.add("hidden");
+            refs.yearPanel.classList.add("hidden");
+            refs.genreToggle.setAttribute("aria-expanded", "false");
+            refs.yearToggle.setAttribute("aria-expanded", "false");
+        }
+
+        function setFilterPanelOpen(name, isOpen) {
+            const isGenre = name === "genre";
+            const panel = isGenre ? refs.genrePanel : refs.yearPanel;
+            const toggle = isGenre ? refs.genreToggle : refs.yearToggle;
+            const otherPanel = isGenre ? refs.yearPanel : refs.genrePanel;
+            const otherToggle = isGenre ? refs.yearToggle : refs.genreToggle;
+
+            otherPanel.classList.add("hidden");
+            otherToggle.setAttribute("aria-expanded", "false");
+
+            panel.classList.toggle("hidden", !isOpen);
+            toggle.setAttribute("aria-expanded", String(isOpen));
+        }
+
+        function renderMultiOptions(kind) {
+            const isGenre = kind === "genre";
+            const values = isGenre ? filterState.genres : filterState.years;
+            const selected = isGenre ? filterState.selectedGenres : filterState.selectedYears;
+            const container = isGenre ? refs.genreOptions : refs.yearOptions;
+
+            container.innerHTML = values
+                .map((value) => {
+                    const active = selected.has(value);
+                    const activeClass = active
+                        ? "border-[hsl(174_77%_26%)] bg-[hsl(174_77%_26%/0.14)] dark:border-[hsl(168_78%_42%)] dark:bg-[hsl(168_78%_42%/0.2)]"
+                        : "border-transparent hover:bg-[hsl(36_33%_94%)] dark:hover:bg-[hsl(220_14%_24%)]";
+                    return `
+                        <button type="button" data-kind="${kind}" data-value="${escapeHtml(value)}" class="flex w-full items-center justify-between rounded-md border px-2 py-1.5 text-left text-sm transition ${activeClass}">
+                            <span class="truncate">${escapeHtml(value)}</span>
+                            <span class="ml-2 text-xs ${active ? "opacity-100" : "opacity-0"}">✓</span>
+                        </button>
+                    `;
+                })
+                .join("");
+        }
+
+        function updateMultiToggleLabels() {
+            const selectedGenres = [...filterState.selectedGenres];
+            const selectedYears = [...filterState.selectedYears];
+
+            refs.genreToggleLabel.textContent =
+                selectedGenres.length === 0
+                    ? "All"
+                    : selectedGenres.length === 1
+                        ? selectedGenres[0]
+                        : `${selectedGenres.length} selected`;
+
+            refs.yearToggleLabel.textContent =
+                selectedYears.length === 0
+                    ? "All"
+                    : selectedYears.length === 1
+                        ? selectedYears[0]
+                        : `${selectedYears.length} selected`;
+        }
+
+        function wireMultiSelectControls() {
+            refs.genreToggle.addEventListener("click", () => {
+                const isOpening = refs.genrePanel.classList.contains("hidden");
+                setFilterPanelOpen("genre", isOpening);
+            });
+
+            refs.yearToggle.addEventListener("click", () => {
+                const isOpening = refs.yearPanel.classList.contains("hidden");
+                setFilterPanelOpen("year", isOpening);
+            });
+
+            refs.genreControl.addEventListener("click", (event) => {
+                event.stopPropagation();
+            });
+
+            refs.yearControl.addEventListener("click", (event) => {
+                event.stopPropagation();
+            });
+
+            refs.genreOptions.addEventListener("click", (event) => {
+                const option = event.target.closest("button[data-value]");
+                if (!option) {
+                    return;
+                }
+
+                const value = option.dataset.value || "";
+                if (!value) {
+                    return;
+                }
+
+                if (filterState.selectedGenres.has(value)) {
+                    filterState.selectedGenres.delete(value);
+                } else {
+                    filterState.selectedGenres.add(value);
+                }
+
+                renderMultiOptions("genre");
+                updateMultiToggleLabels();
+                applyFilters();
+            });
+
+            refs.yearOptions.addEventListener("click", (event) => {
+                const option = event.target.closest("button[data-value]");
+                if (!option) {
+                    return;
+                }
+
+                const value = option.dataset.value || "";
+                if (!value) {
+                    return;
+                }
+
+                if (filterState.selectedYears.has(value)) {
+                    filterState.selectedYears.delete(value);
+                } else {
+                    filterState.selectedYears.add(value);
+                }
+
+                renderMultiOptions("year");
+                updateMultiToggleLabels();
+                applyFilters();
+            });
+
+            refs.genreClear.addEventListener("click", () => {
+                filterState.selectedGenres.clear();
+                renderMultiOptions("genre");
+                updateMultiToggleLabels();
+                applyFilters();
+            });
+
+            refs.yearClear.addEventListener("click", () => {
+                filterState.selectedYears.clear();
+                renderMultiOptions("year");
+                updateMultiToggleLabels();
+                applyFilters();
+            });
+
+            document.addEventListener("click", (event) => {
+                const target = event.target;
+                const isElement = target instanceof Element;
+                const insideControl = isElement && target.closest("#genreControl, #yearControl");
+
+                if (!insideControl) {
+                    closeFilterPanels();
+                }
+            });
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    closeFilterPanels();
+                }
+            });
         }
 
         function updateFiltersShadow() {
@@ -440,19 +625,30 @@
             const sortedGenres = [...genres].sort((a, b) => a.localeCompare(b));
             const sortedYears = [...years].sort((a, b) => Number(b) - Number(a));
 
-            refs.genreSelect.innerHTML =
-                '<option value="">All genres</option>' +
-                sortedGenres.map((genre) => `<option value="${genre}">${genre}</option>`).join("");
+            filterState.genres = sortedGenres;
+            filterState.years = sortedYears;
 
-            refs.yearSelect.innerHTML =
-                '<option value="">All years</option>' +
-                sortedYears.map((year) => `<option value="${year}">${year}</option>`).join("");
+            for (const value of [...filterState.selectedGenres]) {
+                if (!filterState.genres.includes(value)) {
+                    filterState.selectedGenres.delete(value);
+                }
+            }
+
+            for (const value of [...filterState.selectedYears]) {
+                if (!filterState.years.includes(value)) {
+                    filterState.selectedYears.delete(value);
+                }
+            }
+
+            renderMultiOptions("genre");
+            renderMultiOptions("year");
+            updateMultiToggleLabels();
         }
 
         function applyFilters() {
             const query = normalize(refs.searchInput.value);
-            const genre = refs.genreSelect.value;
-            const year = refs.yearSelect.value;
+            const selectedGenres = [...filterState.selectedGenres];
+            const selectedYears = [...filterState.selectedYears];
             const sort = refs.sortSelect.value;
 
             let result = state.movies.filter((movie) => {
@@ -461,8 +657,10 @@
                     .join(" ");
 
                 const matchesQuery = !query || haystack.includes(query);
-                const matchesGenre = !genre || String(movie.Genre || "").split(",").map((g) => g.trim()).includes(genre);
-                const matchesYear = !year || String(movie.Year) === year;
+                const movieGenres = String(movie.Genre || "").split(",").map((g) => g.trim()).filter(Boolean);
+                const movieYear = String(movie.Year || "");
+                const matchesGenre = !selectedGenres.length || selectedGenres.some((genre) => movieGenres.includes(genre));
+                const matchesYear = !selectedYears.length || selectedYears.includes(movieYear);
 
                 return matchesQuery && matchesGenre && matchesYear;
             });
@@ -575,14 +773,13 @@
 
         function wireEvents() {
             refs.searchInput.addEventListener("input", applyFilters);
-            refs.genreSelect.addEventListener("change", applyFilters);
-            refs.yearSelect.addEventListener("change", applyFilters);
             refs.sortSelect.addEventListener("change", applyFilters);
         }
 
         async function init() {
             wireTheme();
             wireGridWidthToggle();
+            wireMultiSelectControls();
             wireEvents();
             try {
                 await loadMovies();
