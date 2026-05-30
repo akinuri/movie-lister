@@ -129,6 +129,8 @@
             mode: "boxed",
         };
 
+        const WIDTH_TOGGLE_MIN_VIEWPORT = 1400;
+
         const layoutState = {
             filtersResizeObserver: null,
         };
@@ -184,9 +186,14 @@
             return "boxed";
         }
 
+        function getEffectiveGridWidthMode() {
+            return window.innerWidth >= WIDTH_TOGGLE_MIN_VIEWPORT ? widthState.mode : "full";
+        }
+
         function updateFiltersControlsLayout() {
             const asideWidth = refs.filtersAside.clientWidth;
-            const rowThreshold = widthState.mode === "boxed" ? 1080 : 1240;
+            const effectiveMode = getEffectiveGridWidthMode();
+            const rowThreshold = effectiveMode === "boxed" ? 1080 : 1240;
             const isColumn = asideWidth < rowThreshold;
 
             // Keep filters in one of two explicit layouts only: row or column.
@@ -205,20 +212,26 @@
 
         function applyGridWidth(mode) {
             widthState.mode = mode;
+            const effectiveMode = getEffectiveGridWidthMode();
             refs.grid.classList.add("p-8");
-            refs.grid.style.maxWidth = mode === "boxed" ? "75vw" : "none";
-            refs.grid.style.marginInline = mode === "boxed" ? "auto" : "0";
-            refs.filtersAside.style.maxWidth = mode === "boxed" ? "75vw" : "none";
-            refs.filtersAside.style.marginInline = mode === "boxed" ? "auto" : "2rem";
+            refs.grid.style.maxWidth = effectiveMode === "boxed" ? "75vw" : "none";
+            refs.grid.style.marginInline = effectiveMode === "boxed" ? "auto" : "0";
+            refs.filtersAside.style.maxWidth = effectiveMode === "boxed" ? "75vw" : "none";
+            refs.filtersAside.style.marginInline = effectiveMode === "boxed" ? "auto" : "2rem";
             updateFiltersControlsLayout();
 
             updateWidthToggleLabel();
         }
 
         function updateWidthToggleLabel() {
-            const currentLabel = widthState.mode === "full" ? "Full" : "Boxed";
+            const effectiveMode = getEffectiveGridWidthMode();
+            const currentLabel = effectiveMode === "full" ? "Full" : "Boxed";
+            const isLockedToFull = window.innerWidth < WIDTH_TOGGLE_MIN_VIEWPORT;
+
             refs.widthToggle.textContent = currentLabel;
-            refs.widthToggle.setAttribute("aria-pressed", String(widthState.mode === "full"));
+            refs.widthToggle.setAttribute("aria-pressed", String(effectiveMode === "full"));
+            refs.widthToggle.disabled = isLockedToFull;
+            refs.widthToggle.setAttribute("aria-disabled", String(isLockedToFull));
         }
 
         function wireGridWidthToggle() {
@@ -232,6 +245,10 @@
                 updateFiltersControlsLayout();
             });
             layoutState.filtersResizeObserver.observe(refs.filtersAside);
+
+            window.addEventListener("resize", () => {
+                applyGridWidth(widthState.mode);
+            });
 
             refs.widthToggle.addEventListener("click", () => {
                 const next = widthState.mode === "full" ? "boxed" : "full";
