@@ -10,6 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: "class",
             theme: {
                 extend: {
                     fontFamily: {
@@ -25,33 +26,33 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-[hsl(37_39%_87%)] text-[hsl(30_13%_10%)] pb-[calc(4rem_+_5vh)]">
+<body class="min-h-screen bg-[hsl(37_39%_87%)] text-[hsl(30_13%_10%)] pb-[calc(4rem_+_5vh)] transition-colors duration-200 dark:bg-[hsl(220_18%_12%)] dark:text-[hsl(43_33%_92%)]">
     <main class="min-h-screen w-full">
         <div class="min-h-screen">
-            <aside class="sticky top-4 z-20 mx-4 mb-4 rounded-xl border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%/0.72)] px-4 pb-4 pt-3 shadow-[0_4px_10px_hsl(32_58%_13%/0.12)] backdrop-blur-md md:mx-6 md:mb-6 md:px-5 md:pb-5 md:pt-4" aria-label="Filters">
+            <aside class="sticky top-4 z-20 mx-8 mb-8 rounded-xl border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%/0.72)] px-4 pb-4 pt-3 shadow-[0_4px_10px_hsl(32_58%_13%/0.12)] backdrop-blur-md transition-colors duration-200 dark:border-[hsl(220_16%_27%)] dark:bg-[hsl(222_20%_16%/0.85)] dark:shadow-[0_4px_14px_hsl(220_45%_5%/0.45)] md:px-5 md:pb-5 md:pt-4" aria-label="Filters">
                 <section class="flex flex-wrap items-end justify-center gap-3">
                     <div class="flex w-full flex-col gap-1.5 lg:w-[min(32rem,100%)]">
-                        <label for="searchInput" class="text-sm text-[hsl(28_10%_39%)]">Search title, actor, director</label>
-                        <input id="searchInput" type="text" placeholder="Try: hemsworth, ambulance, nicolai" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)]" />
+                        <label for="searchInput" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Search title, actor, director</label>
+                        <input id="searchInput" type="text" placeholder="Try: hemsworth, ambulance, nicolai" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:placeholder:text-[hsl(38_12%_63%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" />
                     </div>
 
                     <div class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-56">
-                        <label for="genreSelect" class="text-sm text-[hsl(28_10%_39%)]">Genre</label>
-                        <select id="genreSelect" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)]">
+                        <label for="genreSelect" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Genre</label>
+                        <select id="genreSelect" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]">
                             <option value="">All genres</option>
                         </select>
                     </div>
 
                     <div class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-40">
-                        <label for="yearSelect" class="text-sm text-[hsl(28_10%_39%)]">Year</label>
-                        <select id="yearSelect" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)]">
+                        <label for="yearSelect" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Year</label>
+                        <select id="yearSelect" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]">
                             <option value="">All years</option>
                         </select>
                     </div>
 
                     <div class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-56">
-                        <label for="sortSelect" class="text-sm text-[hsl(28_10%_39%)]">Sort</label>
-                        <select id="sortSelect" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)]">
+                        <label for="sortSelect" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Sort</label>
+                        <select id="sortSelect" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]">
                             <option value="title-asc">Title A-Z</option>
                             <option value="title-desc">Title Z-A</option>
                             <option value="year-desc">Year Newest</option>
@@ -60,12 +61,20 @@
                             <option value="rating-asc">IMDb Rating Low-High</option>
                         </select>
                     </div>
+
+                    <div aria-hidden="true" class="hidden xl:block xl:w-px xl:self-stretch opacity-50 mx-8 xl:bg-[linear-gradient(to_bottom,transparent_0%,hsl(34_33%_78%)_16%,hsl(34_33%_78%)_84%,transparent_100%)] dark:xl:bg-[linear-gradient(to_bottom,transparent_0%,hsl(220_15%_35%)_16%,hsl(220_15%_35%)_84%,transparent_100%)]"></div>
+
+                    <div class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-auto">
+                        <label for="themeToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Theme</label>
+                        <button id="themeToggle" type="button" class="inline-flex h-[42px] w-[70px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-4 text-sm font-medium text-[hsl(30_13%_10%)] transition hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Switch color theme" aria-pressed="false">Dark</button>
+                    </div>
+
                 </section>
             </aside>
 
             <section>
                 <section id="grid" class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8 p-8 sm:grid-cols-[repeat(auto-fill,minmax(360px,1fr))]" aria-label="Movie cards"></section>
-                <div id="emptyState" class="px-4 py-10 text-center text-sm text-[hsl(28_10%_39%)]" hidden>No movies match the current filters.</div>
+                <div id="emptyState" class="px-4 py-10 text-center text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_14%_72%)]" hidden>No movies match the current filters.</div>
             </section>
         </div>
     </main>
@@ -81,9 +90,58 @@
             genreSelect: document.getElementById("genreSelect"),
             yearSelect: document.getElementById("yearSelect"),
             sortSelect: document.getElementById("sortSelect"),
+            themeToggle: document.getElementById("themeToggle"),
             grid: document.getElementById("grid"),
             emptyState: document.getElementById("emptyState"),
         };
+
+        const themeState = {
+            mode: "system",
+            media: window.matchMedia("(prefers-color-scheme: dark)"),
+        };
+
+        function getSystemMode() {
+            return themeState.media.matches ? "dark" : "light";
+        }
+
+        function getPreferredMode() {
+            const saved = localStorage.getItem("theme-mode");
+            if (saved === "dark" || saved === "light") {
+                return saved;
+            }
+            return "system";
+        }
+
+        function applyTheme(mode) {
+            const resolved = mode === "system" ? getSystemMode() : mode;
+            document.documentElement.classList.toggle("dark", resolved === "dark");
+            themeState.mode = mode;
+            updateThemeToggleLabel();
+        }
+
+        function updateThemeToggleLabel() {
+            const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
+            const next = current === "dark" ? "Light" : "Dark";
+            refs.themeToggle.textContent = next;
+            refs.themeToggle.setAttribute("aria-pressed", String(current === "dark"));
+        }
+
+        function wireTheme() {
+            applyTheme(getPreferredMode());
+
+            refs.themeToggle.addEventListener("click", () => {
+                const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
+                const next = current === "dark" ? "light" : "dark";
+                localStorage.setItem("theme-mode", next);
+                applyTheme(next);
+            });
+
+            themeState.media.addEventListener("change", () => {
+                if (themeState.mode === "system") {
+                    applyTheme("system");
+                }
+            });
+        }
 
         function normalize(value) {
             return String(value || "").trim().toLowerCase();
@@ -120,22 +178,22 @@
         function ratingToneClass(imdbRating) {
             const rating = Number.parseFloat(imdbRating);
             if (!Number.isFinite(rating)) {
-                return "text-[hsl(28_10%_39%)]";
+                return "text-[hsl(28_10%_39%)] dark:text-[hsl(38_14%_70%)]";
             }
 
             if (rating >= 7.5) {
-                return "text-[hsl(142_65%_32%)]";
+                return "text-[hsl(142_65%_32%)] dark:text-[hsl(145_68%_62%)]";
             }
 
             if (rating >= 6) {
-                return "text-[hsl(38_78%_44%)]";
+                return "text-[hsl(38_78%_44%)] dark:text-[hsl(43_90%_64%)]";
             }
 
             if (rating >= 4.5) {
-                return "text-[hsl(27_78%_45%)]";
+                return "text-[hsl(27_78%_45%)] dark:text-[hsl(26_84%_62%)]";
             }
 
-            return "text-[hsl(4_72%_45%)]";
+            return "text-[hsl(4_72%_45%)] dark:text-[hsl(4_82%_62%)]";
         }
 
         function posterFallbackDataUri() {
@@ -258,7 +316,7 @@
                 .map((g) => g.trim())
                 .filter(Boolean)
                 .slice(0, 3)
-                .map((g) => `<span class="rounded-full border border-[hsl(32_31%_78%)] bg-[hsl(35_53%_93%)] px-2.5 py-1 text-xs text-[hsl(29_17%_26%)]">${escapeHtml(g)}</span>`)
+                .map((g) => `<span class="rounded-full border border-[hsl(32_31%_78%)] bg-[hsl(35_53%_93%)] px-2.5 py-1 text-xs text-[hsl(29_17%_26%)] dark:border-[hsl(220_16%_33%)] dark:bg-[hsl(220_17%_23%)] dark:text-[hsl(40_30%_86%)]">${escapeHtml(g)}</span>`)
                 .join("");
 
             const rating = movie.imdbRating && movie.imdbRating !== "N/A" ? movie.imdbRating : "-";
@@ -273,19 +331,19 @@
                 .map((a) => a.trim())
                 .filter(Boolean)
                 .slice(0, 3)
-                .map((a) => `<span class="shrink-0 rounded-full border border-[hsl(188_33%_74%)] bg-[hsl(189_54%_92%)] px-2.5 py-1 text-xs text-[hsl(191_37%_27%)]">${escapeHtml(a)}</span>`)
-                .join("") || '<span class="text-[0.9rem] text-[hsl(28_10%_39%)]">Actors unavailable</span>';
+                .map((a) => `<span class="shrink-0 rounded-full border border-[hsl(188_33%_74%)] bg-[hsl(189_54%_92%)] px-2.5 py-1 text-xs text-[hsl(191_37%_27%)] dark:border-[hsl(191_25%_34%)] dark:bg-[hsl(192_34%_24%)] dark:text-[hsl(187_39%_82%)]">${escapeHtml(a)}</span>`)
+                .join("") || '<span class="text-[0.9rem] text-[hsl(28_10%_39%)] dark:text-[hsl(38_14%_70%)]">Actors unavailable</span>';
             const imdb = escapeHtml(movie.imdbID || "");
             const imdbIdRaw = String(movie.imdbID || "").trim();
             const imdbUrl = /^tt\d+$/.test(imdbIdRaw) ? `https://www.imdb.com/title/${imdbIdRaw}/` : "";
             const remotePoster = escapeHtml(movie.Poster || "");
 
             return `
-                <article class="group flex min-h-full flex-col overflow-hidden rounded-xl border border-[hsl(32_32%_75%)] shadow-[0_8px_20px_hsl(32_58%_13%/0.12)] transition duration-150 transform-gpu hover:scale-[1.01] hover:shadow-[0_14px_28px_hsl(32_58%_13%/0.22)]">
-                    <img class="aspect-[2/3] w-full object-cover bg-[hsl(37_43%_90%)]" loading="lazy" src="${posterPath(movie)}" alt="${title} poster" data-imdb="${imdb}" data-poster-url="${remotePoster}" data-step="0" onerror="handlePosterError(this)" />
-                    <div class="flex flex-1 flex-col gap-3 bg-[hsl(40_100%_99%/0.68)] p-4 transition-colors duration-150 group-hover:bg-[hsl(40_100%_99%/0.96)]">
-                        <h2 class="m-0 text-[1.2rem] font-medium leading-6 text-[hsl(24_17%_10%)]">${imdbUrl ? `<a href="${imdbUrl}" target="_blank" rel="noopener noreferrer" class="text-[hsl(208_72%_36%)] transition hover:text-[hsl(208_78%_30%)] hover:underline hover:underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(208_72%_36%/0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(40_100%_99%)]">${title}</a>` : title}</h2>
-                        <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.95rem] leading-7 text-[hsl(29_13%_31%)]">
+                <article class="group flex min-h-full flex-col overflow-hidden rounded-xl border border-[hsl(32_32%_75%)] shadow-[0_8px_20px_hsl(32_58%_13%/0.12)] transition duration-150 transform-gpu hover:scale-[1.01] hover:shadow-[0_14px_28px_hsl(32_58%_13%/0.22)] dark:border-[hsl(220_15%_27%)] dark:shadow-[0_8px_24px_hsl(220_45%_5%/0.5)] dark:hover:shadow-[0_14px_30px_hsl(220_48%_3%/0.72)]">
+                    <img class="aspect-[2/3] w-full object-cover bg-[hsl(37_43%_90%)] dark:bg-[hsl(220_15%_20%)]" loading="lazy" src="${posterPath(movie)}" alt="${title} poster" data-imdb="${imdb}" data-poster-url="${remotePoster}" data-step="0" onerror="handlePosterError(this)" />
+                    <div class="flex flex-1 flex-col gap-3 bg-[hsl(40_100%_99%/0.68)] p-4 transition-colors duration-150 group-hover:bg-[hsl(40_100%_99%/0.96)] dark:bg-[hsl(220_14%_17%/0.9)] dark:group-hover:bg-[hsl(220_14%_21%/0.95)]">
+                        <h2 class="m-0 text-[1.2rem] font-medium leading-6 text-[hsl(24_17%_10%)] dark:text-[hsl(43_33%_92%)]">${imdbUrl ? `<a href="${imdbUrl}" target="_blank" rel="noopener noreferrer" class="text-[hsl(208_72%_36%)] transition hover:text-[hsl(208_78%_30%)] hover:underline hover:underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(208_72%_36%/0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(40_100%_99%)] dark:text-[hsl(198_84%_71%)] dark:hover:text-[hsl(198_92%_80%)] dark:focus-visible:ring-[hsl(198_84%_71%/0.35)] dark:focus-visible:ring-offset-[hsl(220_14%_18%)]">${title}</a>` : title}</h2>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.95rem] leading-7 text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">
                             <span>${escapeHtml(year)}</span>
                             <span aria-hidden="true">&middot;</span>
                             <span>${escapeHtml(runtime)}</span>
@@ -293,11 +351,11 @@
                             <span class="font-medium ${ratingTone}">IMDb ${escapeHtml(rating)}</span>
                         </div>
                         <div class="flex items-center gap-2" title="${escapeHtml(movie.Actors || "Actors unavailable")}">
-                            <span class="shrink-0 text-[0.9rem] text-[hsl(29_13%_31%)]">Stars:</span>
+                            <span class="shrink-0 text-[0.9rem] text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">Stars:</span>
                             <div class="no-scrollbar flex min-w-0 flex-1 flex-nowrap items-center gap-2 overflow-x-auto whitespace-nowrap" style="-ms-overflow-style:none;scrollbar-width:none;">${actorPills}</div>
                         </div>
                         <div class="flex flex-wrap gap-2">${genres}</div>
-                        <p class="m-0 text-[0.95rem] leading-[1.45] text-[hsl(30_14%_24%)]" title="${fullPlot}" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${plot}</p>
+                        <p class="m-0 text-[0.95rem] leading-[1.45] text-[hsl(30_14%_24%)] dark:text-[hsl(40_16%_82%)]" title="${fullPlot}" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${plot}</p>
                     </div>
                 </article>
             `;
@@ -338,6 +396,7 @@
         }
 
         async function init() {
+            wireTheme();
             wireEvents();
             try {
                 await loadMovies();
