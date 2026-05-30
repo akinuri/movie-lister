@@ -520,6 +520,33 @@
             return Number.isFinite(n) ? n : NaN;
         }
 
+        function formatCompactCount(value) {
+            if (!Number.isFinite(value)) {
+                return "";
+            }
+
+            const abs = Math.abs(value);
+            if (abs < 1000) {
+                return String(Math.round(value));
+            }
+
+            const scales = [
+                { threshold: 1e9, suffix: "b" },
+                { threshold: 1e6, suffix: "m" },
+                { threshold: 1e3, suffix: "k" },
+            ];
+
+            for (const scale of scales) {
+                if (abs >= scale.threshold) {
+                    const scaled = value / scale.threshold;
+                    const rounded = Math.abs(scaled) >= 10 ? scaled.toFixed(0) : scaled.toFixed(1);
+                    return `${rounded.replace(/\.0$/, "")}${scale.suffix}`;
+                }
+            }
+
+            return String(Math.round(value));
+        }
+
         function posterPath(movie) {
             const imdbID = movie.imdbID || "";
             return `posters/${imdbID}.jpg`;
@@ -701,6 +728,11 @@
                 .join("");
 
             const rating = movie.imdbRating && movie.imdbRating !== "N/A" ? movie.imdbRating : "-";
+            const votesRaw = String(movie.imdbVotes || "").trim();
+            const votesDigits = votesRaw.replace(/,/g, "");
+            const hasVotes = /^\d+$/.test(votesDigits);
+            const votes = hasVotes ? formatCompactCount(Number(votesDigits)) : "";
+            const ratingWithVotes = hasVotes ? `${escapeHtml(rating)} (${escapeHtml(votes)})` : escapeHtml(rating);
             const runtime = movie.Runtime && movie.Runtime !== "N/A" ? movie.Runtime : "Unknown runtime";
             const year = movie.Year || "Unknown year";
             const title = escapeHtml(movie.Title || "Untitled");
@@ -729,7 +761,7 @@
                             <span aria-hidden="true">&middot;</span>
                             <span>${escapeHtml(runtime)}</span>
                             <span aria-hidden="true">&middot;</span>
-                            <span class="font-medium ${ratingTone}">IMDb ${escapeHtml(rating)}</span>
+                            <span class="${ratingTone}"><span style="font-size:1.1em;line-height:1;display:inline-block;">★</span> ${ratingWithVotes}</span>
                         </div>
                         <div class="flex items-center gap-2" title="${escapeHtml(movie.Actors || "Actors unavailable")}">
                             <span class="shrink-0 text-[0.9rem] text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">Stars:</span>
