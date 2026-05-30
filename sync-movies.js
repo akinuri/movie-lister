@@ -155,7 +155,14 @@ async function main() {
     const requestedMovies = await readMoviesTxt(inputPath);
     const existingMovies = await readExistingMovies(outputPath);
 
-    const existingSet = new Set(existingMovies.map((movie) => movieKey(movie.Title, movie.Year)));
+    // Build a set of keys for deduplication, including both OMDb and queried titles/years
+    const existingSet = new Set();
+    for (const movie of existingMovies) {
+        existingSet.add(movieKey(movie.Title, movie.Year));
+        if (movie.QueriedTitle) {
+            existingSet.add(movieKey(movie.QueriedTitle, movie.QueriedYear));
+        }
+    }
 
     const fetchedMovies = [];
     let skippedExisting = 0;
@@ -180,8 +187,15 @@ async function main() {
                 continue;
             }
 
+            // Store queried title/year for future deduplication
+            data.QueriedTitle = movie.title;
+            data.QueriedYear = movie.year;
+
             fetchedMovies.push(data);
             existingSet.add(key);
+            // Also add OMDb title/year and queried title/year to set
+            existingSet.add(movieKey(data.Title, data.Year));
+            existingSet.add(movieKey(data.QueriedTitle, data.QueriedYear));
             process.stdout.write("ok\n");
         } catch (error) {
             failed += 1;
