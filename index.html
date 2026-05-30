@@ -74,6 +74,8 @@
                                 <option value="year-asc">Year 0-9</option>
                                 <option value="rating-desc">Rating 9-0</option>
                                 <option value="rating-asc">Rating 0-9</option>
+                                <option value="votes-desc">Votes 9-0</option>
+                                <option value="votes-asc">Votes 0-9</option>
                             </select>
                         </div>
 
@@ -710,6 +712,16 @@
                 }
                 if (sort === "rating-asc") {
                     return parseNumber(a.imdbRating) - parseNumber(b.imdbRating);
+                }
+                if (sort === "votes-desc" || sort === "votes-asc") {
+                    const getVotes = (m) => {
+                        const raw = String(m.imdbVotes || "").replace(/,/g, "");
+                        const n = Number.parseInt(raw, 10);
+                        return Number.isFinite(n) ? n : 0;
+                    };
+                    const av = getVotes(a);
+                    const bv = getVotes(b);
+                    return sort === "votes-desc" ? bv - av : av - bv;
                 }
                 return 0;
             });
