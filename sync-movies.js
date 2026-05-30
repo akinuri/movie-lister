@@ -52,10 +52,12 @@ Defaults:
 }
 
 function normalizeTitle(title) {
-    return String(title || "")
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, " ");
+    let t = String(title || "").trim().toLowerCase();
+    // Remove leading 'the ' for sorting/comparison
+    if (t.startsWith("the ")) {
+        t = t.slice(4);
+    }
+    return t.replace(/\s+/g, " ");
 }
 
 function movieKey(title, year) {

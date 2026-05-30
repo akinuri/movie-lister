@@ -701,11 +701,16 @@
             });
 
             result = result.sort((a, b) => {
+                function normalizeSortTitle(title) {
+                    let t = String(title || "").trim().toLowerCase();
+                    if (t.startsWith("the ")) t = t.slice(4);
+                    return t;
+                }
                 if (sort === "title-asc") {
-                    return String(a.Title || "").localeCompare(String(b.Title || ""));
+                    return normalizeSortTitle(a.Title).localeCompare(normalizeSortTitle(b.Title));
                 }
                 if (sort === "title-desc") {
-                    return String(b.Title || "").localeCompare(String(a.Title || ""));
+                    return normalizeSortTitle(b.Title).localeCompare(normalizeSortTitle(a.Title));
                 }
                 if (sort === "year-desc") {
                     return Number(b.Year || 0) - Number(a.Year || 0);
