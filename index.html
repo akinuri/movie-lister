@@ -117,7 +117,15 @@
         const state = {
             movies: [],
             filtered: [],
+            allInfoVisible: getInitialInfoVisible(),
         };
+
+        function getInitialInfoVisible() {
+            const saved = localStorage.getItem("info-visible");
+            if (saved === "false") return false;
+            if (saved === "true") return true;
+            return true; // default: info visible
+        }
 
         const refs = {
             searchInput: document.getElementById("searchInput"),
@@ -832,6 +840,7 @@
                 infoToggle.setAttribute("aria-pressed", String(state.allInfoVisible !== false));
                 infoToggle.onclick = () => {
                     state.allInfoVisible = state.allInfoVisible === false ? true : false;
+                    localStorage.setItem("info-visible", String(state.allInfoVisible));
                     render();
                 };
             }
