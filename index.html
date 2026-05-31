@@ -296,10 +296,14 @@
                     const activeClass = active
                         ? "border-[hsl(174_77%_26%)] bg-[hsl(174_77%_26%/0.14)] dark:border-[hsl(168_78%_42%)] dark:bg-[hsl(168_78%_42%/0.2)]"
                         : "border-transparent hover:bg-[hsl(36_33%_94%)] dark:hover:bg-[hsl(220_14%_24%)]";
+                    // SVG checkbox: filled if active, faded if not
+                    const checkbox = active
+                        ? `<svg class="w-4 h-4 mr-2 flex-shrink-0 text-[hsl(174_77%_26%)] dark:text-[hsl(168_78%_42%)]" fill="currentColor" viewBox="0 0 20 20"><rect x="2" y="2" width="16" height="16" rx="4" fill="currentColor"/><path d="M6 10.5l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`
+                        : `<svg class="w-4 h-4 mr-2 flex-shrink-0 text-[hsl(28_10%_39%)] opacity-40 dark:text-[hsl(38_18%_72%)]" fill="none" stroke="currentColor" viewBox="0 0 20 20"><rect x="2" y="2" width="16" height="16" rx="4" stroke="currentColor" stroke-width="2" fill="none"/></svg>`;
                     return `
-                        <button type="button" data-kind="${kind}" data-value="${escapeHtml(value)}" class="flex w-full items-center justify-between rounded-md border px-2 py-1.5 text-left text-sm transition ${activeClass}">
+                        <button type="button" data-kind="${kind}" data-value="${escapeHtml(value)}" class="flex w-full items-center rounded-md border px-2 py-1.5 text-left text-sm transition ${activeClass}">
+                            ${checkbox}
                             <span class="truncate">${escapeHtml(value)}</span>
-                            <span class="ml-2 text-xs ${active ? "opacity-100" : "opacity-0"}">✓</span>
                         </button>
                     `;
                 })
