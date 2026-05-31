@@ -82,6 +82,8 @@
                                 <option value="rating-asc">Rating 0-9</option>
                                 <option value="votes-desc">Votes 9-0</option>
                                 <option value="votes-asc">Votes 0-9</option>
+                                <option value="runtime-desc">Runtime 9-0</option>
+                                <option value="runtime-asc">Runtime 0-9</option>
                             </select>
                         </div>
 
@@ -751,6 +753,15 @@
                     const av = getVotes(a);
                     const bv = getVotes(b);
                     return sort === "votes-desc" ? bv - av : av - bv;
+                }
+                if (sort === "runtime-desc" || sort === "runtime-asc") {
+                    const getRuntime = (m) => {
+                        const match = String(m.Runtime || "").match(/(\d+)\s*min/i);
+                        return match ? parseInt(match[1], 10) : 0;
+                    };
+                    const ar = getRuntime(a);
+                    const br = getRuntime(b);
+                    return sort === "runtime-desc" ? br - ar : ar - br;
                 }
                 return 0;
             });
