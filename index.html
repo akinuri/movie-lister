@@ -38,9 +38,24 @@
             <aside id="filtersAside" class="sticky top-8 z-20 mx-4 mt-4 mb-0 rounded-xl border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%/0.72)] px-3 pb-3 pt-3 shadow-[0_4px_10px_hsl(32_58%_13%/0.12)] backdrop-blur-md transition-[transform,opacity,box-shadow] duration-500 ease-in-out dark:border-[hsl(220_16%_27%)] dark:bg-[hsl(222_20%_16%/0.85)] dark:shadow-[0_4px_14px_hsl(220_45%_5%/0.45)] md:mx-8 md:mt-8 md:mb-0 md:px-5 md:pb-5 md:pt-4" aria-label="Filters">
                 <section class="flex flex-wrap items-end justify-center gap-4">
                     <div id="filtersControlsGroup" class="flex w-full min-w-0 flex-wrap items-end gap-3 lg:w-auto lg:flex-none lg:min-w-0 lg:flex-nowrap">
+
                         <div id="searchControl" class="flex w-full flex-col gap-1.5 lg:w-[16rem]">
                             <label for="searchInput" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Search title, actor, director</label>
                             <input id="searchInput" type="text" placeholder="hemsworth, ambulance, nicolai" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:placeholder:text-[hsl(38_12%_63%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" />
+                        </div>
+
+                        <div id="letterControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-20 xl:w-32">
+                            <label for="letterToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Title Letter</label>
+                            <button id="letterToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select title letters" aria-expanded="false">
+                                <span id="letterToggleLabel" class="truncate">All</span>
+                                <span class="text-xs opacity-70">▼</span>
+                            </button>
+                            <div id="letterPanel" class="hidden absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
+                                <div class="mb-2 flex items-center justify-end">
+                                    <button id="letterClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] transition hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
+                                </div>
+                                <div id="letterOptions" class="max-h-56 space-y-1 overflow-y-auto pr-1"></div>
+                            </div>
                         </div>
 
                         <div id="genreControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-48 xl:w-56">
@@ -136,6 +151,11 @@
         }
 
         const refs = {
+            letterToggle: document.getElementById("letterToggle"),
+            letterToggleLabel: document.getElementById("letterToggleLabel"),
+            letterPanel: document.getElementById("letterPanel"),
+            letterOptions: document.getElementById("letterOptions"),
+            letterClear: document.getElementById("letterClear"),
             searchInput: document.getElementById("searchInput"),
             genreToggle: document.getElementById("genreToggle"),
             genreToggleLabel: document.getElementById("genreToggleLabel"),
@@ -161,6 +181,119 @@
             grid: document.getElementById("grid"),
             emptyState: document.getElementById("emptyState"),
         };
+
+        // --- Title Letter Filter State and Logic ---
+        const letterState = {
+            letters: [],
+            selectedLetters: new Set(),
+        };
+
+        function renderLetterOptions() {
+            const values = letterState.letters;
+            const selected = letterState.selectedLetters;
+            const container = refs.letterOptions;
+            container.innerHTML = values
+                .map((value) => {
+                    const active = selected.has(value);
+                    const activeClass = active
+                        ? "border-[hsl(174_77%_26%)] bg-[hsl(174_77%_26%/0.14)] dark:border-[hsl(168_78%_42%)] dark:bg-[hsl(168_78%_42%/0.2)]"
+                        : "border-transparent hover:bg-[hsl(36_33%_94%)] dark:hover:bg-[hsl(220_14%_24%)]";
+                    const checkbox = active
+                        ? `<svg class='w-4 h-4 mr-2 flex-shrink-0 text-[hsl(174_77%_26%)] dark:text-[hsl(168_78%_42%)]' fill='currentColor' viewBox='0 0 20 20'><rect x='2' y='2' width='16' height='16' rx='4' fill='currentColor'/><path d='M6 10.5l3 3 5-5' stroke='#fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>`
+                        : `<svg class='w-4 h-4 mr-2 flex-shrink-0 text-[hsl(28_10%_39%)] opacity-40 dark:text-[hsl(38_18%_72%)]' fill='none' stroke='currentColor' viewBox='0 0 20 20'><rect x='2' y='2' width='16' height='16' rx='4' stroke='currentColor' stroke-width='2' fill='none'/></svg>`;
+                    return `
+                        <button type='button' data-value='${escapeHtml(value)}' class='flex w-full items-center rounded-md border px-2 py-1.5 text-left text-sm transition ${activeClass}'>${checkbox}<span class='truncate'>${escapeHtml(value)}</span></button>
+                    `;
+                })
+                .join("");
+        }
+
+        function updateLetterToggleLabel() {
+            const selected = [...letterState.selectedLetters];
+            refs.letterToggleLabel.textContent =
+                selected.length === 0
+                    ? "All"
+                    : selected.length === 1
+                        ? selected[0]
+                        : `${selected.length} selected`;
+        }
+
+        function setLetterPanelOpen(isOpen) {
+            refs.letterPanel.classList.toggle("hidden", !isOpen);
+            refs.letterToggle.setAttribute("aria-expanded", String(isOpen));
+        }
+
+        function wireLetterMultiSelectControl() {
+            refs.letterToggle.addEventListener("click", () => {
+                const isOpening = refs.letterPanel.classList.contains("hidden");
+                setLetterPanelOpen(isOpening);
+            });
+
+            refs.letterControl?.addEventListener("click", (event) => {
+                event.stopPropagation();
+            });
+
+            refs.letterOptions.addEventListener("click", (event) => {
+                event.stopPropagation(); // Prevent closing panel on option click
+                const option = event.target.closest("button[data-value]");
+                if (!option) return;
+                const value = option.dataset.value || "";
+                if (!value) return;
+                if (letterState.selectedLetters.has(value)) {
+                    letterState.selectedLetters.delete(value);
+                } else {
+                    letterState.selectedLetters.add(value);
+                }
+                renderLetterOptions();
+                updateLetterToggleLabel();
+                applyFilters();
+            });
+
+            refs.letterClear.addEventListener("click", () => {
+                letterState.selectedLetters.clear();
+                renderLetterOptions();
+                updateLetterToggleLabel();
+                applyFilters();
+            });
+
+            document.addEventListener("click", (event) => {
+                const target = event.target;
+                const isElement = target instanceof Element;
+                const insideControl = isElement && target.closest("#letterControl");
+                if (!insideControl) {
+                    refs.letterPanel.classList.add("hidden");
+                    refs.letterToggle.setAttribute("aria-expanded", "false");
+                }
+            });
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    refs.letterPanel.classList.add("hidden");
+                    refs.letterToggle.setAttribute("aria-expanded", "false");
+                }
+            });
+        }
+
+        function fillLetterOptions(movies) {
+            const letters = new Set();
+            for (const movie of movies) {
+                const title = String(movie.Title || "").trim();
+                if (title) {
+                    const first = title[0].toUpperCase();
+                    if (/^[A-Z]$/.test(first)) {
+                        letters.add(first);
+                    }
+                }
+            }
+            letterState.letters = [...letters].sort();
+            for (const value of [...letterState.selectedLetters]) {
+                if (!letterState.letters.includes(value)) {
+                    letterState.selectedLetters.delete(value);
+                }
+            }
+            renderLetterOptions();
+            updateLetterToggleLabel();
+        }
 
         function updateResultsCount() {
             refs.resultsCount.textContent = `${state.filtered.length} Titles`;
@@ -698,6 +831,7 @@
             renderMultiOptions("genre");
             renderMultiOptions("year");
             updateMultiToggleLabels();
+            fillLetterOptions(movies);
         }
 
         function applyFilters() {
@@ -716,8 +850,11 @@
                 const movieYear = String(movie.Year || "");
                 const matchesGenre = !selectedGenres.length || selectedGenres.some((genre) => movieGenres.includes(genre));
                 const matchesYear = !selectedYears.length || selectedYears.includes(movieYear);
+                const selectedLetters = [...letterState.selectedLetters];
+                const firstLetter = String(movie.Title || "").trim()[0]?.toUpperCase() || "";
+                const matchesLetter = !selectedLetters.length || selectedLetters.includes(firstLetter);
 
-                return matchesQuery && matchesGenre && matchesYear;
+                return matchesQuery && matchesGenre && matchesYear && matchesLetter;
             });
 
             result = result.sort((a, b) => {
@@ -892,6 +1029,7 @@
             wireTheme();
             wireGridWidthToggle();
             wireMultiSelectControls();
+            wireLetterMultiSelectControl();
             wireEvents();
             try {
                 await loadMovies();
