@@ -851,9 +851,29 @@
                 const matchesGenre = !selectedGenres.length || selectedGenres.some((genre) => movieGenres.includes(genre));
                 const matchesYear = !selectedYears.length || selectedYears.includes(movieYear);
                 const selectedLetters = [...letterState.selectedLetters];
-                const firstLetter = String(movie.Title || "").trim()[0]?.toUpperCase() || "";
-                const matchesLetter = !selectedLetters.length || selectedLetters.includes(firstLetter);
-
+                const rawTitle = String(movie.Title || "").trim();
+                const firstLetter = rawTitle[0]?.toUpperCase() || "";
+                let altLetter = null;
+                if (/^The\s+/i.test(rawTitle)) {
+                    altLetter = rawTitle.slice(4).trim()[0]?.toUpperCase() || null;
+                }
+                let matchesLetter = false;
+                if (!selectedLetters.length) {
+                    matchesLetter = true;
+                } else {
+                    // If "T" is selected, match all titles starting with "The "
+                    if (firstLetter === "T" && /^The\s+/i.test(rawTitle) && selectedLetters.includes("T")) {
+                        matchesLetter = true;
+                    }
+                    // If altLetter is present, match if selected
+                    if (altLetter && selectedLetters.includes(altLetter)) {
+                        matchesLetter = true;
+                    }
+                    // Always match the actual first letter
+                    if (selectedLetters.includes(firstLetter)) {
+                        matchesLetter = true;
+                    }
+                }
                 return matchesQuery && matchesGenre && matchesYear && matchesLetter;
             });
 
