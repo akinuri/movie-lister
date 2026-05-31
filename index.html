@@ -333,6 +333,8 @@
         const layoutState = {
             filtersResizeObserver: null,
             lastScrollY: window.scrollY,
+            lastState: "shown", // "shown" or "hidden"
+            lastStateY: window.scrollY,
         };
 
         function getSystemMode() {
@@ -587,50 +589,35 @@
                 : "0 10px 24px hsl(32 58% 13% / 0.2)";
         }
 
-        function updateFiltersScrollVisibility(forceShow = false) {
-            const isStickyEnabled = window.innerWidth >= WIDTH_TOGGLE_MIN_VIEWPORT;
+        function updateFiltersScrollVisibility() {
             const currentScrollY = window.scrollY;
+            if (typeof layoutState.lastScrollY !== "number") layoutState.lastScrollY = currentScrollY;
+            if (typeof layoutState.lastState !== "string") layoutState.lastState = "shown";
 
-            if (!isStickyEnabled || forceShow) {
-                refs.filtersAside.style.transform = "translateY(0)";
-                refs.filtersAside.style.opacity = "1";
-                refs.filtersAside.style.pointerEvents = "auto";
-                updateFiltersShadow();
-                layoutState.lastScrollY = currentScrollY;
-                return;
+            // Show on scroll up, hide on scroll down
+            if (currentScrollY < 32 || currentScrollY < layoutState.lastScrollY) {
+                // Show
+                if (layoutState.lastState !== "shown") {
+                    refs.filtersAside.style.transform = "translateY(0)";
+                    refs.filtersAside.style.opacity = "1";
+                    refs.filtersAside.style.pointerEvents = "auto";
+                    layoutState.lastState = "shown";
+                }
+            } else if (currentScrollY > layoutState.lastScrollY + 10) {
+                // Hide
+                if (layoutState.lastState !== "hidden") {
+                    refs.filtersAside.style.transform = "translateY(-110%)";
+                    refs.filtersAside.style.opacity = "0";
+                    refs.filtersAside.style.pointerEvents = "none";
+                    layoutState.lastState = "hidden";
+                }
             }
-
-            if (currentScrollY <= 8) {
-                refs.filtersAside.style.transform = "translateY(0)";
-                refs.filtersAside.style.opacity = "1";
-                refs.filtersAside.style.pointerEvents = "auto";
-                updateFiltersShadow();
-                layoutState.lastScrollY = currentScrollY;
-                return;
-            }
-
-            const scrollingDown = currentScrollY > layoutState.lastScrollY + 14;
-            const scrollingUp = currentScrollY < layoutState.lastScrollY - 14;
-
-            if (scrollingDown && currentScrollY > 180) {
-                refs.filtersAside.style.transform = "translateY(calc(-100% - 1rem))";
-                refs.filtersAside.style.opacity = "0";
-                refs.filtersAside.style.pointerEvents = "none";
-            } else if (scrollingUp) {
-                refs.filtersAside.style.transform = "translateY(0)";
-                refs.filtersAside.style.opacity = "1";
-                refs.filtersAside.style.pointerEvents = "auto";
-            }
-
-            updateFiltersShadow();
-
             layoutState.lastScrollY = currentScrollY;
         }
 
         function applyGridWidth(mode) {
             widthState.mode = mode;
             const effectiveMode = getEffectiveGridWidthMode();
-            const isStickyEnabled = window.innerWidth >= WIDTH_TOGGLE_MIN_VIEWPORT;
             const fullModeInlineMargin = window.innerWidth < 640 ? "1rem" : "2rem";
             const gridStyles = window.getComputedStyle(refs.grid);
             const gridPadX = Number.parseFloat(gridStyles.paddingLeft || "0") + Number.parseFloat(gridStyles.paddingRight || "0");
@@ -639,8 +626,8 @@
             refs.grid.style.marginInline = "auto";
             refs.filtersAside.style.maxWidth = effectiveMode === "boxed" ? `calc(75vw - ${gridPadX}px)` : "none";
             refs.filtersAside.style.marginInline = effectiveMode === "boxed" ? "auto" : fullModeInlineMargin;
-            refs.filtersAside.style.position = isStickyEnabled ? "sticky" : "static";
-            refs.filtersAside.style.top = isStickyEnabled ? "2rem" : "auto";
+            refs.filtersAside.style.position = "sticky";
+            refs.filtersAside.style.top = "2rem";
             updateFiltersControlsLayout();
             updateFiltersScrollVisibility(true);
 
