@@ -854,8 +854,8 @@
                 const rawTitle = String(movie.Title || "").trim();
                 const firstLetter = rawTitle[0]?.toUpperCase() || "";
                 let altLetter = null;
-                if (/^The\s+/i.test(rawTitle)) {
-                    altLetter = rawTitle.slice(4).trim()[0]?.toUpperCase() || null;
+                if (/^(The|A)\s+/i.test(rawTitle)) {
+                    altLetter = rawTitle.replace(/^(The|A)\s+/i, "").trim()[0]?.toUpperCase() || null;
                 }
                 let matchesLetter = false;
                 if (!selectedLetters.length) {
@@ -863,6 +863,10 @@
                 } else {
                     // If "T" is selected, match all titles starting with "The "
                     if (firstLetter === "T" && /^The\s+/i.test(rawTitle) && selectedLetters.includes("T")) {
+                        matchesLetter = true;
+                    }
+                    // If "A" is selected, match all titles starting with "A "
+                    if (firstLetter === "A" && /^A\s+/i.test(rawTitle) && selectedLetters.includes("A")) {
                         matchesLetter = true;
                     }
                     // If altLetter is present, match if selected
@@ -881,7 +885,8 @@
                 function normalizeSortTitle(title) {
                     let t = String(title || "").trim().toLowerCase();
                     if (t.startsWith("the ")) t = t.slice(4);
-                    return t;
+                    else if (t.startsWith("a ")) t = t.slice(2);
+                    return t.trim();
                 }
                 if (sort === "title-asc") {
                     return normalizeSortTitle(a.Title).localeCompare(normalizeSortTitle(b.Title));
