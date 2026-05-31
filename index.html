@@ -102,7 +102,15 @@
                             </select>
                         </div>
 
-                        <div id="countControl" class="flex w-[90px] items-end mb-2 ml-4 opacity-50">
+                        <!-- Insert: Ignore leading articles checkbox -->
+                        <div id="articlesControl" class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-28">
+                            <label for="ignoreArticlesCheckbox" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)] cursor-pointer w-fit" title="If checked, the 'a', 'an', and 'the' articles gets ignored when filtering by initial letter and sorting by title.">Ignore articles?</label>
+                            <div class="flex h-11 items-center -mt-1">
+                                <input type="checkbox" id="ignoreArticlesCheckbox" class="cursor-pointer accent-[hsl(30_13%_50%)] dark:accent-[hsl(43_33%_82%)]" />
+                            </div>
+                        </div>
+
+                        <div id="countControl" class="flex w-[90px] items-end mb-3 ml-4 opacity-50">
                             <span id="resultsCount">0 Titles</span>
                         </div>
                     </div>
@@ -180,6 +188,11 @@
             filtersAside: document.getElementById("filtersAside"),
             grid: document.getElementById("grid"),
             emptyState: document.getElementById("emptyState"),
+        };
+
+        // --- Ignore Leading Articles State ---
+        const articlesState = {
+            ignore: false,
         };
 
         // --- Title Letter Filter State and Logic ---
@@ -395,7 +408,7 @@
             refs.sortControl.style.width = isColumn ? "100%" : "12rem";
             refs.countControl.style.width = isColumn ? "100%" : "90px";
             refs.countControl.style.marginLeft = isColumn ? "0" : "1rem";
-            refs.countControl.style.marginBottom = isColumn ? "0" : "0.5rem";
+            refs.countControl.style.marginBottom = isColumn ? "0" : "0.75rem";
         }
 
         function closeFilterPanels() {
@@ -852,30 +865,55 @@
                 const matchesYear = !selectedYears.length || selectedYears.includes(movieYear);
                 const selectedLetters = [...letterState.selectedLetters];
                 const rawTitle = String(movie.Title || "").trim();
-                const firstLetter = rawTitle[0]?.toUpperCase() || "";
+                let firstLetter = rawTitle[0]?.toUpperCase() || "";
                 let altLetter = null;
-                if (/^(The|A)\s+/i.test(rawTitle)) {
-                    altLetter = rawTitle.replace(/^(The|A)\s+/i, "").trim()[0]?.toUpperCase() || null;
+                let ignoreArticles = articlesState.ignore;
+                if (ignoreArticles) {
+                    if (/^(The|A|An)\s+/i.test(rawTitle)) {
+                        altLetter = rawTitle.replace(/^(The|A|An)\s+/i, "").trim()[0]?.toUpperCase() || null;
+                    }
+                } else {
+                    if (/^The\s+/i.test(rawTitle)) {
+                        altLetter = rawTitle.slice(4).trim()[0]?.toUpperCase() || null;
+                    }
                 }
                 let matchesLetter = false;
                 if (!selectedLetters.length) {
                     matchesLetter = true;
                 } else {
-                    // If "T" is selected, match all titles starting with "The "
-                    if (firstLetter === "T" && /^The\s+/i.test(rawTitle) && selectedLetters.includes("T")) {
-                        matchesLetter = true;
-                    }
-                    // If "A" is selected, match all titles starting with "A "
-                    if (firstLetter === "A" && /^A\s+/i.test(rawTitle) && selectedLetters.includes("A")) {
-                        matchesLetter = true;
-                    }
-                    // If altLetter is present, match if selected
-                    if (altLetter && selectedLetters.includes(altLetter)) {
-                        matchesLetter = true;
-                    }
-                    // Always match the actual first letter
-                    if (selectedLetters.includes(firstLetter)) {
-                        matchesLetter = true;
+                    if (ignoreArticles) {
+                        // If "T", "A", or "An" is selected, match all titles starting with those articles
+                        if (firstLetter === "T" && /^The\s+/i.test(rawTitle) && selectedLetters.includes("T")) {
+                            matchesLetter = true;
+                        }
+                        if (firstLetter === "A" && /^A\s+/i.test(rawTitle) && selectedLetters.includes("A")) {
+                            matchesLetter = true;
+                        }
+                        if (firstLetter === "A" && /^An\s+/i.test(rawTitle) && selectedLetters.includes("A")) {
+                            matchesLetter = true;
+                        }
+                        // If altLetter is present, match if selected
+                        if (altLetter && selectedLetters.includes(altLetter)) {
+                            matchesLetter = true;
+                        }
+                        // Always match the actual first letter
+                        if (selectedLetters.includes(firstLetter)) {
+                            matchesLetter = true;
+                        }
+                    } else {
+                        // Default: only ignore 'The' for altLetter
+                        // If "T" is selected, match all titles starting with "The "
+                        if (firstLetter === "T" && /^The\s+/i.test(rawTitle) && selectedLetters.includes("T")) {
+                            matchesLetter = true;
+                        }
+                        // If altLetter is present, match if selected
+                        if (altLetter && selectedLetters.includes(altLetter)) {
+                            matchesLetter = true;
+                        }
+                        // Always match the actual first letter
+                        if (selectedLetters.includes(firstLetter)) {
+                            matchesLetter = true;
+                        }
                     }
                 }
                 return matchesQuery && matchesGenre && matchesYear && matchesLetter;
@@ -884,8 +922,13 @@
             result = result.sort((a, b) => {
                 function normalizeSortTitle(title) {
                     let t = String(title || "").trim().toLowerCase();
-                    if (t.startsWith("the ")) t = t.slice(4);
-                    else if (t.startsWith("a ")) t = t.slice(2);
+                    if (articlesState.ignore) {
+                        if (t.startsWith("the ")) t = t.slice(4);
+                        else if (t.startsWith("an ")) t = t.slice(3);
+                        else if (t.startsWith("a ")) t = t.slice(2);
+                    } else {
+                        if (t.startsWith("the ")) t = t.slice(4);
+                    }
                     return t.trim();
                 }
                 if (sort === "title-asc") {
@@ -1048,6 +1091,13 @@
         function wireEvents() {
             refs.searchInput.addEventListener("input", applyFilters);
             refs.sortSelect.addEventListener("change", applyFilters);
+            // Wire up ignore articles checkbox
+            const cb = document.getElementById("ignoreArticlesCheckbox");
+            cb.checked = articlesState.ignore;
+            cb.addEventListener("change", (e) => {
+                articlesState.ignore = cb.checked;
+                applyFilters();
+            });
         }
 
         async function init() {
