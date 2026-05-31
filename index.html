@@ -290,12 +290,12 @@
         function fillLetterOptions(movies) {
             const letters = new Set();
             for (const movie of movies) {
-                const title = String(movie.Title || "").trim();
-                if (title) {
-                    const first = title[0].toUpperCase();
-                    if (/^[A-Z]$/.test(first)) {
-                        letters.add(first);
-                    }
+                const rawTitle = String(movie.Title || "").trim();
+                // Always ignore leading articles for letter options
+                let normalized = rawTitle.replace(/^(The|An|A)\s+/i, "").trim();
+                const letter = normalized[0]?.toUpperCase();
+                if (letter && /[A-Z0-9]/.test(letter)) {
+                    letters.add(letter);
                 }
             }
             letterState.letters = [...letters].sort();
