@@ -865,14 +865,16 @@
                 const matchesYear = !selectedYears.length || selectedYears.includes(movieYear);
                 const selectedLetters = [...letterState.selectedLetters];
                 const rawTitle = String(movie.Title || "").trim();
+                let ignoreArticles = articlesState.ignore;
                 let firstLetter = rawTitle[0]?.toUpperCase() || "";
                 let altLetter = null;
-                let ignoreArticles = articlesState.ignore;
+                let effectiveLetter = firstLetter;
                 if (ignoreArticles) {
-                    if (/^(The|A|An)\s+/i.test(rawTitle)) {
-                        altLetter = rawTitle.replace(/^(The|A|An)\s+/i, "").trim()[0]?.toUpperCase() || null;
-                    }
+                    // Always ignore A, An, The for filtering
+                    const normalized = rawTitle.replace(/^(The|An|A)\s+/i, "").trim();
+                    effectiveLetter = normalized[0]?.toUpperCase() || "";
                 } else {
+                    // Only ignore 'The' for altLetter, and only allow altLetter if the selected letter is NOT the first letter
                     if (/^The\s+/i.test(rawTitle)) {
                         altLetter = rawTitle.slice(4).trim()[0]?.toUpperCase() || null;
                     }
@@ -882,35 +884,12 @@
                     matchesLetter = true;
                 } else {
                     if (ignoreArticles) {
-                        // If "T", "A", or "An" is selected, match all titles starting with those articles
-                        if (firstLetter === "T" && /^The\s+/i.test(rawTitle) && selectedLetters.includes("T")) {
-                            matchesLetter = true;
-                        }
-                        if (firstLetter === "A" && /^A\s+/i.test(rawTitle) && selectedLetters.includes("A")) {
-                            matchesLetter = true;
-                        }
-                        if (firstLetter === "A" && /^An\s+/i.test(rawTitle) && selectedLetters.includes("A")) {
-                            matchesLetter = true;
-                        }
-                        // If altLetter is present, match if selected
-                        if (altLetter && selectedLetters.includes(altLetter)) {
-                            matchesLetter = true;
-                        }
-                        // Always match the actual first letter
-                        if (selectedLetters.includes(firstLetter)) {
+                        // Only match the effective letter (after ignoring articles)
+                        if (selectedLetters.includes(effectiveLetter)) {
                             matchesLetter = true;
                         }
                     } else {
-                        // Default: only ignore 'The' for altLetter
-                        // If "T" is selected, match all titles starting with "The "
-                        if (firstLetter === "T" && /^The\s+/i.test(rawTitle) && selectedLetters.includes("T")) {
-                            matchesLetter = true;
-                        }
-                        // If altLetter is present, match if selected
-                        if (altLetter && selectedLetters.includes(altLetter)) {
-                            matchesLetter = true;
-                        }
-                        // Always match the actual first letter
+                        // When not ignoring articles, only match the first letter
                         if (selectedLetters.includes(firstLetter)) {
                             matchesLetter = true;
                         }
