@@ -58,6 +58,20 @@
                             </div>
                         </div>
 
+                        <div id="typeControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-32 xl:w-40">
+                            <label for="typeToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Type</label>
+                            <button id="typeToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select types" aria-expanded="false">
+                                <span id="typeToggleLabel" class="truncate">All</span>
+                                <span class="text-xs opacity-70">▼</span>
+                            </button>
+                            <div id="typePanel" class="hidden absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
+                                <div class="mb-2 flex items-center justify-end">
+                                    <button id="typeClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] transition hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
+                                </div>
+                                <div id="typeOptions" class="max-h-56 space-y-1 overflow-y-auto pr-1"></div>
+                            </div>
+                        </div>
+
                         <div id="genreControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-48 xl:w-56">
                             <label for="genreToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Genre</label>
                             <button id="genreToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select genres" aria-expanded="false">
@@ -170,6 +184,11 @@
             genrePanel: document.getElementById("genrePanel"),
             genreOptions: document.getElementById("genreOptions"),
             genreClear: document.getElementById("genreClear"),
+            typeToggle: document.getElementById("typeToggle"),
+            typeToggleLabel: document.getElementById("typeToggleLabel"),
+            typePanel: document.getElementById("typePanel"),
+            typeOptions: document.getElementById("typeOptions"),
+            typeClear: document.getElementById("typeClear"),
             yearToggle: document.getElementById("yearToggle"),
             yearToggleLabel: document.getElementById("yearToggleLabel"),
             yearPanel: document.getElementById("yearPanel"),
@@ -180,6 +199,7 @@
             widthToggle: document.getElementById("widthToggle"),
             filtersControlsGroup: document.getElementById("filtersControlsGroup"),
             searchControl: document.getElementById("searchControl"),
+            typeControl: document.getElementById("typeControl"),
             genreControl: document.getElementById("genreControl"),
             yearControl: document.getElementById("yearControl"),
             sortControl: document.getElementById("sortControl"),
@@ -322,8 +342,10 @@
         };
 
         const filterState = {
+            types: [],
             genres: [],
             years: [],
+            selectedTypes: new Set(),
             selectedGenres: new Set(),
             selectedYears: new Set(),
         };
@@ -405,6 +427,7 @@
             refs.filtersControlsGroup.style.alignItems = isColumn ? "stretch" : "flex-end";
 
             refs.searchControl.style.width = isColumn ? "100%" : "16rem";
+            refs.typeControl.style.width = isColumn ? "100%" : "8rem";
             refs.genreControl.style.width = isColumn ? "100%" : "12rem";
             refs.yearControl.style.width = isColumn ? "100%" : "8rem";
             refs.sortControl.style.width = isColumn ? "100%" : "12rem";
@@ -414,31 +437,42 @@
         }
 
         function closeFilterPanels() {
+            refs.typePanel.classList.add("hidden");
             refs.genrePanel.classList.add("hidden");
             refs.yearPanel.classList.add("hidden");
+            refs.typeToggle.setAttribute("aria-expanded", "false");
             refs.genreToggle.setAttribute("aria-expanded", "false");
             refs.yearToggle.setAttribute("aria-expanded", "false");
         }
 
         function setFilterPanelOpen(name, isOpen) {
-            const isGenre = name === "genre";
-            const panel = isGenre ? refs.genrePanel : refs.yearPanel;
-            const toggle = isGenre ? refs.genreToggle : refs.yearToggle;
-            const otherPanel = isGenre ? refs.yearPanel : refs.genrePanel;
-            const otherToggle = isGenre ? refs.yearToggle : refs.genreToggle;
+            const panelMap = {
+                type: refs.typePanel,
+                genre: refs.genrePanel,
+                year: refs.yearPanel,
+            };
+            const toggleMap = {
+                type: refs.typeToggle,
+                genre: refs.genreToggle,
+                year: refs.yearToggle,
+            };
 
-            otherPanel.classList.add("hidden");
-            otherToggle.setAttribute("aria-expanded", "false");
+            for (const key of Object.keys(panelMap)) {
+                if (key === name) continue;
+                panelMap[key].classList.add("hidden");
+                toggleMap[key].setAttribute("aria-expanded", "false");
+            }
 
-            panel.classList.toggle("hidden", !isOpen);
-            toggle.setAttribute("aria-expanded", String(isOpen));
+            panelMap[name].classList.toggle("hidden", !isOpen);
+            toggleMap[name].setAttribute("aria-expanded", String(isOpen));
         }
 
         function renderMultiOptions(kind) {
+            const isType = kind === "type";
             const isGenre = kind === "genre";
-            const values = isGenre ? filterState.genres : filterState.years;
-            const selected = isGenre ? filterState.selectedGenres : filterState.selectedYears;
-            const container = isGenre ? refs.genreOptions : refs.yearOptions;
+            const values = isType ? filterState.types : isGenre ? filterState.genres : filterState.years;
+            const selected = isType ? filterState.selectedTypes : isGenre ? filterState.selectedGenres : filterState.selectedYears;
+            const container = isType ? refs.typeOptions : isGenre ? refs.genreOptions : refs.yearOptions;
 
             container.innerHTML = values
                 .map((value) => {
@@ -461,8 +495,16 @@
         }
 
         function updateMultiToggleLabels() {
+            const selectedTypes = [...filterState.selectedTypes];
             const selectedGenres = [...filterState.selectedGenres];
             const selectedYears = [...filterState.selectedYears];
+
+            refs.typeToggleLabel.textContent =
+                selectedTypes.length === 0
+                    ? "All"
+                    : selectedTypes.length === 1
+                        ? selectedTypes[0]
+                        : `${selectedTypes.length} selected`;
 
             refs.genreToggleLabel.textContent =
                 selectedGenres.length === 0
@@ -480,6 +522,11 @@
         }
 
         function wireMultiSelectControls() {
+            refs.typeToggle.addEventListener("click", () => {
+                const isOpening = refs.typePanel.classList.contains("hidden");
+                setFilterPanelOpen("type", isOpening);
+            });
+
             refs.genreToggle.addEventListener("click", () => {
                 const isOpening = refs.genrePanel.classList.contains("hidden");
                 setFilterPanelOpen("genre", isOpening);
@@ -490,12 +537,38 @@
                 setFilterPanelOpen("year", isOpening);
             });
 
+            refs.typeControl.addEventListener("click", (event) => {
+                event.stopPropagation();
+            });
+
             refs.genreControl.addEventListener("click", (event) => {
                 event.stopPropagation();
             });
 
             refs.yearControl.addEventListener("click", (event) => {
                 event.stopPropagation();
+            });
+
+            refs.typeOptions.addEventListener("click", (event) => {
+                const option = event.target.closest("button[data-value]");
+                if (!option) {
+                    return;
+                }
+
+                const value = option.dataset.value || "";
+                if (!value) {
+                    return;
+                }
+
+                if (filterState.selectedTypes.has(value)) {
+                    filterState.selectedTypes.delete(value);
+                } else {
+                    filterState.selectedTypes.add(value);
+                }
+
+                renderMultiOptions("type");
+                updateMultiToggleLabels();
+                applyFilters();
             });
 
             refs.genreOptions.addEventListener("click", (event) => {
@@ -556,10 +629,17 @@
                 applyFilters();
             });
 
+            refs.typeClear.addEventListener("click", () => {
+                filterState.selectedTypes.clear();
+                renderMultiOptions("type");
+                updateMultiToggleLabels();
+                applyFilters();
+            });
+
             document.addEventListener("click", (event) => {
                 const target = event.target;
                 const isElement = target instanceof Element;
-                const insideControl = isElement && target.closest("#genreControl, #yearControl");
+                const insideControl = isElement && target.closest("#typeControl, #genreControl, #yearControl");
 
                 if (!insideControl) {
                     closeFilterPanels();
@@ -795,10 +875,16 @@
         }
 
         function fillFilterOptions(movies) {
+            const types = new Set();
             const genres = new Set();
             const years = new Set();
 
             for (const movie of movies) {
+                const type = String(movie.Type || "").trim();
+                if (type) {
+                    types.add(type);
+                }
+
                 String(movie.Genre || "")
                     .split(",")
                     .map((g) => g.trim())
@@ -810,11 +896,19 @@
                 }
             }
 
+            const sortedTypes = [...types].sort((a, b) => a.localeCompare(b));
             const sortedGenres = [...genres].sort((a, b) => a.localeCompare(b));
             const sortedYears = [...years].sort((a, b) => Number(b) - Number(a));
 
+            filterState.types = sortedTypes;
             filterState.genres = sortedGenres;
             filterState.years = sortedYears;
+
+            for (const value of [...filterState.selectedTypes]) {
+                if (!filterState.types.includes(value)) {
+                    filterState.selectedTypes.delete(value);
+                }
+            }
 
             for (const value of [...filterState.selectedGenres]) {
                 if (!filterState.genres.includes(value)) {
@@ -828,6 +922,7 @@
                 }
             }
 
+            renderMultiOptions("type");
             renderMultiOptions("genre");
             renderMultiOptions("year");
             updateMultiToggleLabels();
@@ -836,6 +931,7 @@
 
         function applyFilters() {
             const query = normalize(refs.searchInput.value);
+            const selectedTypes = [...filterState.selectedTypes];
             const selectedGenres = [...filterState.selectedGenres];
             const selectedYears = [...filterState.selectedYears];
             const sort = refs.sortSelect.value;
@@ -846,8 +942,10 @@
                     .join(" ");
 
                 const matchesQuery = !query || haystack.includes(query);
+                const movieType = String(movie.Type || "").trim();
                 const movieGenres = String(movie.Genre || "").split(",").map((g) => g.trim()).filter(Boolean);
                 const movieYear = String(movie.Year || "");
+                const matchesType = !selectedTypes.length || selectedTypes.includes(movieType);
                 const matchesGenre = !selectedGenres.length || selectedGenres.some((genre) => movieGenres.includes(genre));
                 const matchesYear = !selectedYears.length || selectedYears.includes(movieYear);
                 const selectedLetters = [...letterState.selectedLetters];
@@ -882,7 +980,7 @@
                         }
                     }
                 }
-                return matchesQuery && matchesGenre && matchesYear && matchesLetter;
+                return matchesQuery && matchesType && matchesGenre && matchesYear && matchesLetter;
             });
 
             result = result.sort((a, b) => {
