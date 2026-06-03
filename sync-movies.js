@@ -186,7 +186,12 @@ async function main() {
             if (movie.year) params.set("y", movie.year);
             const omdbUrl = `https://www.omdbapi.com/?${params.toString()}`;
 
-            const data = await fetchOmdbByTitle(movie.title, movie.year, args.apiKey);
+            let data = await fetchOmdbByTitle(movie.title, movie.year, args.apiKey);
+
+            if (!data && movie.year) {
+                process.stdout.write("not found, retrying without year ... ");
+                data = await fetchOmdbByTitle(movie.title, "", args.apiKey);
+            }
 
             if (!data) {
                 failed += 1;
