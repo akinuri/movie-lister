@@ -1341,6 +1341,60 @@
             applyFilters();
         }
 
+        function parseTagArgs(argsLike) {
+            const tags = [];
+            for (const value of argsLike) {
+                if (Array.isArray(value)) {
+                    for (const nested of value) {
+                        tags.push(nested);
+                    }
+                } else {
+                    tags.push(value);
+                }
+            }
+            return sanitizeTagList(tags);
+        }
+
+        function addTags(...tags) {
+            const targetTags = parseTagArgs(tags);
+            if (!targetTags.length) {
+                return { updatedMovies: 0, addedTags: 0 };
+            }
+
+            let updatedMovies = 0;
+            let addedTags = 0;
+
+            for (const movie of state.filtered) {
+                const existing = sanitizeTagList(movie.Tags);
+                const existingLower = new Set(existing.map((tag) => tag.toLowerCase()));
+                const merged = [...existing];
+                let changed = false;
+
+                for (const candidate of targetTags) {
+                    const key = candidate.toLowerCase();
+                    if (existingLower.has(key)) {
+                        continue;
+                    }
+                    existingLower.add(key);
+                    merged.push(candidate);
+                    addedTags += 1;
+                    changed = true;
+                }
+
+                if (changed) {
+                    movie.Tags = merged;
+                    updatedMovies += 1;
+                }
+            }
+
+            if (updatedMovies > 0) {
+                fillFilterOptions(state.movies);
+                applyFilters();
+            }
+
+            return { updatedMovies, addedTags };
+        }
+
         function removeTagFromMovie(movieKey, tagValue) {
             const movie = getMovieByKey(movieKey);
             if (!movie) {
@@ -1355,6 +1409,44 @@
             movie.Tags = sanitizeTagList(movie.Tags).filter((item) => item.toLowerCase() !== tag);
             fillFilterOptions(state.movies);
             applyFilters();
+        }
+
+        function removeTags(...tags) {
+            const targetTags = parseTagArgs(tags).map((tag) => tag.toLowerCase());
+            if (!targetTags.length) {
+                return { updatedMovies: 0, removedTags: 0 };
+            }
+
+            const targetSet = new Set(targetTags);
+            let updatedMovies = 0;
+            let removedTags = 0;
+
+            for (const movie of state.filtered) {
+                const existing = sanitizeTagList(movie.Tags);
+                const next = [];
+                let changed = false;
+
+                for (const tag of existing) {
+                    if (targetSet.has(tag.toLowerCase())) {
+                        removedTags += 1;
+                        changed = true;
+                        continue;
+                    }
+                    next.push(tag);
+                }
+
+                if (changed) {
+                    movie.Tags = next;
+                    updatedMovies += 1;
+                }
+            }
+
+            if (updatedMovies > 0) {
+                fillFilterOptions(state.movies);
+                applyFilters();
+            }
+
+            return { updatedMovies, removedTags };
         }
 
         function focusTagInput(movieKey) {
@@ -1460,6 +1552,8 @@
             wireLetterMultiSelectControl();
             wireTagEditors();
             wireEvents();
+            window.addTags = addTags;
+            window.removeTags = removeTags;
             try {
                 await loadMovies();
             } catch (error) {
