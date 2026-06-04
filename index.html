@@ -134,7 +134,10 @@
                         <div id="articlesControl" class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-28">
                             <label for="ignoreArticlesCheckbox" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)] cursor-pointer w-fit" title="If checked, the 'a', 'an', and 'the' articles gets ignored when filtering by initial letter and sorting by title.">Ignore articles?</label>
                             <div class="flex h-11 items-center -mt-1">
-                                <input type="checkbox" id="ignoreArticlesCheckbox" class="cursor-pointer accent-[hsl(30_13%_50%)] dark:accent-[hsl(43_33%_82%)]" />
+                                <label for="ignoreArticlesCheckbox" class="inline-flex cursor-pointer items-center">
+                                    <input type="checkbox" id="ignoreArticlesCheckbox" class="peer sr-only" />
+                                    <span class="inline-flex h-4 w-4 items-center justify-center rounded-[4px] border border-[hsl(34_33%_70%)] bg-[hsl(0_0%_100%)] text-transparent text-[11px] font-semibold leading-none peer-checked:border-[hsl(174_77%_26%)] peer-checked:bg-[hsl(174_77%_26%)] peer-checked:text-[hsl(0_0%_100%)] peer-focus-visible:ring-2 peer-focus-visible:ring-[hsl(174_77%_26%/0.35)] peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_42%)] dark:bg-[hsl(220_16%_22%)] dark:peer-checked:border-[hsl(168_78%_42%)] dark:peer-checked:bg-[hsl(168_78%_42%)] dark:peer-checked:text-[hsl(220_30%_10%)] dark:peer-focus-visible:ring-[hsl(168_78%_42%/0.4)] dark:peer-focus-visible:ring-offset-[hsl(220_18%_12%)]">✓</span>
+                                </label>
                             </div>
                         </div>
 
