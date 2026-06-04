@@ -100,6 +100,20 @@
                             </div>
                         </div>
 
+                        <div id="tagControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-48 xl:w-56">
+                            <label for="tagToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Tags</label>
+                            <button id="tagToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select tags" aria-expanded="false">
+                                <span id="tagToggleLabel" class="truncate">All</span>
+                                <span class="text-xs opacity-70">▼</span>
+                            </button>
+                            <div id="tagPanel" class="hidden absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
+                                <div class="mb-2 flex items-center justify-end">
+                                    <button id="tagClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] transition hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
+                                </div>
+                                <div id="tagOptions" class="max-h-56 space-y-1 overflow-y-auto pr-1"></div>
+                            </div>
+                        </div>
+
                         <div id="sortControl" class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-48 xl:w-56">
                             <label for="sortSelect" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Sort</label>
                             <select id="sortSelect" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 transition focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]">
@@ -147,6 +161,11 @@
                             <label for="widthToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Width</label>
                             <button id="widthToggle" type="button" class="inline-flex h-[42px] w-[70px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-4 text-sm text-[hsl(30_13%_10%)] transition hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Switch grid width" aria-pressed="false">Boxed</button>
                         </div>
+
+                        <div class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-auto">
+                            <label for="exportJsonButton" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Data</label>
+                            <button id="exportJsonButton" type="button" class="inline-flex h-[42px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-4 text-sm text-[hsl(30_13%_10%)] transition hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Download edited movies JSON">Download</button>
+                        </div>
                     </div>
                 </section>
             </aside>
@@ -178,6 +197,7 @@
             letterPanel: document.getElementById("letterPanel"),
             letterOptions: document.getElementById("letterOptions"),
             letterClear: document.getElementById("letterClear"),
+            letterControl: document.getElementById("letterControl"),
             searchInput: document.getElementById("searchInput"),
             genreToggle: document.getElementById("genreToggle"),
             genreToggleLabel: document.getElementById("genreToggleLabel"),
@@ -194,9 +214,16 @@
             yearPanel: document.getElementById("yearPanel"),
             yearOptions: document.getElementById("yearOptions"),
             yearClear: document.getElementById("yearClear"),
+            tagToggle: document.getElementById("tagToggle"),
+            tagToggleLabel: document.getElementById("tagToggleLabel"),
+            tagPanel: document.getElementById("tagPanel"),
+            tagOptions: document.getElementById("tagOptions"),
+            tagClear: document.getElementById("tagClear"),
+            tagControl: document.getElementById("tagControl"),
             sortSelect: document.getElementById("sortSelect"),
             themeToggle: document.getElementById("themeToggle"),
             widthToggle: document.getElementById("widthToggle"),
+            exportJsonButton: document.getElementById("exportJsonButton"),
             filtersControlsGroup: document.getElementById("filtersControlsGroup"),
             searchControl: document.getElementById("searchControl"),
             typeControl: document.getElementById("typeControl"),
@@ -345,9 +372,11 @@
             types: [],
             genres: [],
             years: [],
+            tags: [],
             selectedTypes: new Set(),
             selectedGenres: new Set(),
             selectedYears: new Set(),
+            selectedTags: new Set(),
         };
 
         const WIDTH_TOGGLE_MIN_VIEWPORT = 1400;
@@ -430,6 +459,7 @@
             refs.typeControl.style.width = isColumn ? "100%" : "8rem";
             refs.genreControl.style.width = isColumn ? "100%" : "12rem";
             refs.yearControl.style.width = isColumn ? "100%" : "8rem";
+            refs.tagControl.style.width = isColumn ? "100%" : "12rem";
             refs.sortControl.style.width = isColumn ? "100%" : "12rem";
             refs.countControl.style.width = isColumn ? "100%" : "90px";
             refs.countControl.style.marginLeft = isColumn ? "0" : "1rem";
@@ -440,9 +470,11 @@
             refs.typePanel.classList.add("hidden");
             refs.genrePanel.classList.add("hidden");
             refs.yearPanel.classList.add("hidden");
+            refs.tagPanel.classList.add("hidden");
             refs.typeToggle.setAttribute("aria-expanded", "false");
             refs.genreToggle.setAttribute("aria-expanded", "false");
             refs.yearToggle.setAttribute("aria-expanded", "false");
+            refs.tagToggle.setAttribute("aria-expanded", "false");
         }
 
         function setFilterPanelOpen(name, isOpen) {
@@ -450,11 +482,13 @@
                 type: refs.typePanel,
                 genre: refs.genrePanel,
                 year: refs.yearPanel,
+                tag: refs.tagPanel,
             };
             const toggleMap = {
                 type: refs.typeToggle,
                 genre: refs.genreToggle,
                 year: refs.yearToggle,
+                tag: refs.tagToggle,
             };
 
             for (const key of Object.keys(panelMap)) {
@@ -470,9 +504,10 @@
         function renderMultiOptions(kind) {
             const isType = kind === "type";
             const isGenre = kind === "genre";
-            const values = isType ? filterState.types : isGenre ? filterState.genres : filterState.years;
-            const selected = isType ? filterState.selectedTypes : isGenre ? filterState.selectedGenres : filterState.selectedYears;
-            const container = isType ? refs.typeOptions : isGenre ? refs.genreOptions : refs.yearOptions;
+            const isYear = kind === "year";
+            const values = isType ? filterState.types : isGenre ? filterState.genres : isYear ? filterState.years : filterState.tags;
+            const selected = isType ? filterState.selectedTypes : isGenre ? filterState.selectedGenres : isYear ? filterState.selectedYears : filterState.selectedTags;
+            const container = isType ? refs.typeOptions : isGenre ? refs.genreOptions : isYear ? refs.yearOptions : refs.tagOptions;
 
             container.innerHTML = values
                 .map((value) => {
@@ -498,6 +533,7 @@
             const selectedTypes = [...filterState.selectedTypes];
             const selectedGenres = [...filterState.selectedGenres];
             const selectedYears = [...filterState.selectedYears];
+            const selectedTags = [...filterState.selectedTags];
 
             refs.typeToggleLabel.textContent =
                 selectedTypes.length === 0
@@ -519,6 +555,13 @@
                     : selectedYears.length === 1
                         ? selectedYears[0]
                         : `${selectedYears.length} selected`;
+
+            refs.tagToggleLabel.textContent =
+                selectedTags.length === 0
+                    ? "All"
+                    : selectedTags.length === 1
+                        ? selectedTags[0]
+                        : `${selectedTags.length} selected`;
         }
 
         function wireMultiSelectControls() {
@@ -537,6 +580,11 @@
                 setFilterPanelOpen("year", isOpening);
             });
 
+            refs.tagToggle.addEventListener("click", () => {
+                const isOpening = refs.tagPanel.classList.contains("hidden");
+                setFilterPanelOpen("tag", isOpening);
+            });
+
             refs.typeControl.addEventListener("click", (event) => {
                 event.stopPropagation();
             });
@@ -546,6 +594,10 @@
             });
 
             refs.yearControl.addEventListener("click", (event) => {
+                event.stopPropagation();
+            });
+
+            refs.tagControl.addEventListener("click", (event) => {
                 event.stopPropagation();
             });
 
@@ -615,6 +667,28 @@
                 applyFilters();
             });
 
+            refs.tagOptions.addEventListener("click", (event) => {
+                const option = event.target.closest("button[data-value]");
+                if (!option) {
+                    return;
+                }
+
+                const value = option.dataset.value || "";
+                if (!value) {
+                    return;
+                }
+
+                if (filterState.selectedTags.has(value)) {
+                    filterState.selectedTags.delete(value);
+                } else {
+                    filterState.selectedTags.add(value);
+                }
+
+                renderMultiOptions("tag");
+                updateMultiToggleLabels();
+                applyFilters();
+            });
+
             refs.genreClear.addEventListener("click", () => {
                 filterState.selectedGenres.clear();
                 renderMultiOptions("genre");
@@ -636,10 +710,17 @@
                 applyFilters();
             });
 
+            refs.tagClear.addEventListener("click", () => {
+                filterState.selectedTags.clear();
+                renderMultiOptions("tag");
+                updateMultiToggleLabels();
+                applyFilters();
+            });
+
             document.addEventListener("click", (event) => {
                 const target = event.target;
                 const isElement = target instanceof Element;
-                const insideControl = isElement && target.closest("#typeControl, #genreControl, #yearControl");
+                const insideControl = isElement && target.closest("#typeControl, #genreControl, #yearControl, #tagControl");
 
                 if (!insideControl) {
                     closeFilterPanels();
@@ -761,6 +842,77 @@
             return Number.isFinite(n) ? n : NaN;
         }
 
+        function normalizeTag(value) {
+            return String(value || "")
+                .trim()
+                .replace(/\s+/g, " ");
+        }
+
+        function sanitizeTagList(rawTags) {
+            const values = Array.isArray(rawTags)
+                ? rawTags
+                : typeof rawTags === "string"
+                    ? rawTags.split(",")
+                    : [];
+            const dedup = new Set();
+            const result = [];
+
+            for (const value of values) {
+                const tag = normalizeTag(value);
+                if (!tag) {
+                    continue;
+                }
+                const key = tag.toLowerCase();
+                if (dedup.has(key)) {
+                    continue;
+                }
+                dedup.add(key);
+                result.push(tag);
+            }
+
+            return result;
+        }
+
+        function getMovieKey(movie, index) {
+            const imdbID = String(movie?.imdbID || "").trim();
+            if (imdbID) {
+                return imdbID;
+            }
+            return `idx-${index}`;
+        }
+
+        function ensureMovieMeta(movies) {
+            movies.forEach((movie, index) => {
+                movie._movieKey = getMovieKey(movie, index);
+                movie.Tags = sanitizeTagList(movie.Tags || movie.tags);
+            });
+        }
+
+        function getMovieByKey(movieKey) {
+            return state.movies.find((movie) => movie._movieKey === movieKey) || null;
+        }
+
+        function downloadEditedMovies() {
+            const payload = state.movies.map((movie) => {
+                const clean = { ...movie };
+                delete clean._movieKey;
+                clean.Tags = sanitizeTagList(movie.Tags);
+                return clean;
+            });
+
+            const blob = new Blob([JSON.stringify(payload, null, 4)], {
+                type: "application/json;charset=utf-8",
+            });
+
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "movies.json";
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(link.href);
+        }
+
         function formatCompactCount(value) {
             if (!Number.isFinite(value)) {
                 return "";
@@ -878,6 +1030,7 @@
             const types = new Set();
             const genres = new Set();
             const years = new Set();
+            const tags = new Set();
 
             for (const movie of movies) {
                 const type = String(movie.Type || "").trim();
@@ -894,15 +1047,19 @@
                 if (movie.Year && movie.Year !== "N/A") {
                     years.add(String(movie.Year));
                 }
+
+                sanitizeTagList(movie.Tags).forEach((tag) => tags.add(tag));
             }
 
             const sortedTypes = [...types].sort((a, b) => a.localeCompare(b));
             const sortedGenres = [...genres].sort((a, b) => a.localeCompare(b));
             const sortedYears = [...years].sort((a, b) => Number(b) - Number(a));
+            const sortedTags = [...tags].sort((a, b) => a.localeCompare(b));
 
             filterState.types = sortedTypes;
             filterState.genres = sortedGenres;
             filterState.years = sortedYears;
+            filterState.tags = sortedTags;
 
             for (const value of [...filterState.selectedTypes]) {
                 if (!filterState.types.includes(value)) {
@@ -922,9 +1079,16 @@
                 }
             }
 
+            for (const value of [...filterState.selectedTags]) {
+                if (!filterState.tags.includes(value)) {
+                    filterState.selectedTags.delete(value);
+                }
+            }
+
             renderMultiOptions("type");
             renderMultiOptions("genre");
             renderMultiOptions("year");
+            renderMultiOptions("tag");
             updateMultiToggleLabels();
             fillLetterOptions(movies);
         }
@@ -934,10 +1098,12 @@
             const selectedTypes = [...filterState.selectedTypes];
             const selectedGenres = [...filterState.selectedGenres];
             const selectedYears = [...filterState.selectedYears];
+            const selectedTags = [...filterState.selectedTags];
             const sort = refs.sortSelect.value;
 
             let result = state.movies.filter((movie) => {
-                const haystack = [movie.Title, movie.Actors, movie.Director, movie.Plot, movie.Genre]
+                const movieTags = sanitizeTagList(movie.Tags);
+                const haystack = [movie.Title, movie.Actors, movie.Director, movie.Plot, movie.Genre, movieTags.join(" ")]
                     .map(normalize)
                     .join(" ");
 
@@ -948,6 +1114,7 @@
                 const matchesType = !selectedTypes.length || selectedTypes.includes(movieType);
                 const matchesGenre = !selectedGenres.length || selectedGenres.some((genre) => movieGenres.includes(genre));
                 const matchesYear = !selectedYears.length || selectedYears.includes(movieYear);
+                const matchesTag = !selectedTags.length || selectedTags.some((tag) => movieTags.includes(tag));
                 const selectedLetters = [...letterState.selectedLetters];
                 const rawTitle = String(movie.Title || "").trim();
                 let ignoreArticles = articlesState.ignore;
@@ -980,7 +1147,7 @@
                         }
                     }
                 }
-                return matchesQuery && matchesType && matchesGenre && matchesYear && matchesLetter;
+                return matchesQuery && matchesType && matchesGenre && matchesYear && matchesTag && matchesLetter;
             });
 
             result = result.sort((a, b) => {
@@ -1083,6 +1250,16 @@
                 .slice(0, 3)
                 .map((a) => `<span class="shrink-0 rounded-full border border-[hsl(188_33%_74%)] bg-[hsl(189_54%_92%)] px-2.5 py-1 text-xs text-[hsl(191_37%_27%)] dark:border-[hsl(191_25%_34%)] dark:bg-[hsl(192_34%_24%)] dark:text-[hsl(187_39%_82%)]">${escapeHtml(a)}</span>`)
                 .join("") || '<span class="text-[0.9rem] text-[hsl(28_10%_39%)] dark:text-[hsl(38_14%_70%)]">Actors unavailable</span>';
+            const movieTags = sanitizeTagList(movie.Tags);
+            const movieKey = escapeHtml(movie._movieKey || "");
+            const tagPills = movieTags
+                .map((tag) => `
+                    <span class="inline-flex overflow-hidden rounded-full border border-[hsl(170_50%_55%)] bg-[hsl(166_72%_92%)] text-xs text-[hsl(164_70%_19%)] dark:border-[hsl(164_49%_48%)] dark:bg-[hsl(166_40%_23%)] dark:text-[hsl(162_71%_82%)]">
+                        <span class="px-2.5 py-1">${escapeHtml(tag)}</span>
+                        <button type="button" data-tag-remove="${movieKey}" data-tag-value="${escapeHtml(tag)}" class="inline-flex min-h-full items-center justify-center border-l border-[hsl(170_50%_55%_/_40%)] bg-[hsl(166_75%_86%)] px-2 text-[10px] leading-none text-[hsl(164_70%_19%)] transition hover:bg-[hsl(166_78%_80%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.35)] dark:border-[hsl(164_49%_48%)] dark:bg-[hsl(166_39%_30%)] dark:text-[hsl(162_71%_82%)] dark:hover:bg-[hsl(166_39%_36%)]" title="Remove tag" aria-label="Remove tag ${escapeHtml(tag)}">x</button>
+                    </span>
+                `)
+                .join("");
             const imdb = escapeHtml(movie.imdbID || "");
             const imdbIdRaw = String(movie.imdbID || "").trim();
             const imdbUrl = /^tt\d+$/.test(imdbIdRaw) ? `https://www.imdb.com/title/${imdbIdRaw}/` : "";
@@ -1106,6 +1283,13 @@
                         </div>
                         <div class="flex flex-wrap gap-2 my-1">${genres}</div>
                         <p class="m-0 text-[0.95rem] leading-[1.45] text-[hsl(30_14%_24%)] dark:text-[hsl(40_16%_82%)]" title="${fullPlot}" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${plot}</p>
+                        <div class="mt-2 flex flex-wrap items-center gap-2 border-t border-[hsl(32_32%_75%_/_50%)] pt-3 dark:border-[hsl(220_15%_27%)]">
+                            ${tagPills}
+                            <span class="inline-flex h-8 overflow-hidden rounded-full border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)]">
+                                <input type="text" data-tag-input="${movieKey}" class="h-full w-20 bg-transparent px-3 text-xs text-[hsl(30_13%_10%)] outline-none ring-0 dark:text-[hsl(45_35%_93%)]" placeholder="Add tag" maxlength="32" />
+                                <button type="button" data-tag-add="${movieKey}" class="inline-flex min-h-full items-center justify-center border-l border-[hsl(34_33%_84%)] bg-[hsl(36_33%_94%)] px-2.5 text-xs text-[hsl(30_13%_10%)] transition hover:bg-[hsl(36_37%_90%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.35)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_14%_26%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_30%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)]" aria-label="Add tag">+</button>
+                            </span>
+                        </div>
                     </div>
                 </article>
             `;
@@ -1136,6 +1320,108 @@
             }
         }
 
+        function addTagToMovie(movieKey, value) {
+            const movie = getMovieByKey(movieKey);
+            if (!movie) {
+                return;
+            }
+
+            const tag = normalizeTag(value);
+            if (!tag) {
+                return;
+            }
+
+            const existing = sanitizeTagList(movie.Tags);
+            if (existing.some((item) => item.toLowerCase() === tag.toLowerCase())) {
+                return;
+            }
+
+            movie.Tags = [...existing, tag];
+            fillFilterOptions(state.movies);
+            applyFilters();
+        }
+
+        function removeTagFromMovie(movieKey, tagValue) {
+            const movie = getMovieByKey(movieKey);
+            if (!movie) {
+                return;
+            }
+
+            const tag = normalizeTag(tagValue).toLowerCase();
+            if (!tag) {
+                return;
+            }
+
+            movie.Tags = sanitizeTagList(movie.Tags).filter((item) => item.toLowerCase() !== tag);
+            fillFilterOptions(state.movies);
+            applyFilters();
+        }
+
+        function focusTagInput(movieKey) {
+            if (!movieKey) {
+                return;
+            }
+
+            requestAnimationFrame(() => {
+                const selector = `input[data-tag-input="${CSS.escape(movieKey)}"]`;
+                const input = refs.grid.querySelector(selector);
+                if (input instanceof HTMLInputElement) {
+                    input.focus();
+                }
+            });
+        }
+
+        function wireTagEditors() {
+            refs.grid.addEventListener("click", (event) => {
+                const target = event.target;
+                if (!(target instanceof Element)) {
+                    return;
+                }
+
+                const removeButton = target.closest("button[data-tag-remove]");
+                if (removeButton) {
+                    removeTagFromMovie(removeButton.dataset.tagRemove || "", removeButton.dataset.tagValue || "");
+                    return;
+                }
+
+                const addButton = target.closest("button[data-tag-add]");
+                if (!addButton) {
+                    return;
+                }
+
+                const movieKey = addButton.dataset.tagAdd || "";
+                const input = refs.grid.querySelector(`input[data-tag-input="${CSS.escape(movieKey)}"]`);
+                if (!input) {
+                    return;
+                }
+
+                addTagToMovie(movieKey, input.value);
+                input.value = "";
+                focusTagInput(movieKey);
+            });
+
+            refs.grid.addEventListener("keydown", (event) => {
+                const target = event.target;
+                if (!(target instanceof HTMLInputElement)) {
+                    return;
+                }
+
+                if (event.key !== "Enter") {
+                    return;
+                }
+
+                const movieKey = target.dataset.tagInput || "";
+                if (!movieKey) {
+                    return;
+                }
+
+                event.preventDefault();
+                addTagToMovie(movieKey, target.value);
+                target.value = "";
+                focusTagInput(movieKey);
+            });
+        }
+
         async function loadMovies() {
             const response = await fetch("movies.json", { cache: "no-store" });
             if (!response.ok) {
@@ -1147,6 +1433,7 @@
                 throw new Error("movies.json must contain an array");
             }
 
+            ensureMovieMeta(movies);
             state.movies = movies;
             fillFilterOptions(movies);
             applyFilters();
@@ -1162,6 +1449,8 @@
                 articlesState.ignore = cb.checked;
                 applyFilters();
             });
+
+            refs.exportJsonButton.addEventListener("click", downloadEditedMovies);
         }
 
         async function init() {
@@ -1169,6 +1458,7 @@
             wireGridWidthToggle();
             wireMultiSelectControls();
             wireLetterMultiSelectControl();
+            wireTagEditors();
             wireEvents();
             try {
                 await loadMovies();
