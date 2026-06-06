@@ -1133,17 +1133,11 @@
                 const rawTitle = String(movie.Title || "").trim();
                 let ignoreArticles = articlesState.ignore;
                 let firstLetter = rawTitle[0]?.toUpperCase() || "";
-                let altLetter = null;
                 let effectiveLetter = firstLetter;
                 if (ignoreArticles) {
                     // Always ignore A, An, The for filtering
                     const normalized = rawTitle.replace(/^(The|An|A)\s+/i, "").trim();
                     effectiveLetter = normalized[0]?.toUpperCase() || "";
-                } else {
-                    // Only ignore 'The' for altLetter, and only allow altLetter if the selected letter is NOT the first letter
-                    if (/^The\s+/i.test(rawTitle)) {
-                        altLetter = rawTitle.slice(4).trim()[0]?.toUpperCase() || null;
-                    }
                 }
                 let matchesLetter = false;
                 if (!selectedLetters.length) {
@@ -1171,8 +1165,6 @@
                         if (t.startsWith("the ")) t = t.slice(4);
                         else if (t.startsWith("an ")) t = t.slice(3);
                         else if (t.startsWith("a ")) t = t.slice(2);
-                    } else {
-                        if (t.startsWith("the ")) t = t.slice(4);
                     }
                     return t.trim();
                 }
@@ -1553,6 +1545,7 @@
             cb.checked = articlesState.ignore;
             cb.addEventListener("change", (e) => {
                 articlesState.ignore = cb.checked;
+                fillLetterOptions(state.movies);
                 applyFilters();
             });
 
