@@ -141,11 +141,11 @@
                             </div>
                         </div>
 
-                        <div id="countControl" class="flex w-[90px] items-end mb-3 ml-4 opacity-50">
+                        <div id="countControl" class="flex w-[90px] items-end mb-2 opacity-50">
                             <span id="resultsCount">0 Titles</span>
                         </div>
 
-                        <div id="controlsToggleControl" class="flex w-[46px] items-end">
+                        <div id="controlsToggleControl" class="flex w-[46px] items-end ml-4">
                             <button id="controlsToggle" type="button" class="inline-flex h-[42px] w-[46px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Show control buttons" aria-pressed="false" title="Show controls">
                                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <path d="M10.3 2.9h3.4l.6 2.1c.4.1.9.3 1.3.5l1.9-1.1 2.4 2.4-1.1 1.9c.2.4.4.9.5 1.3l2.1.6v3.4l-2.1.6c-.1.4-.3.9-.5 1.3l1.1 1.9-2.4 2.4-1.9-1.1c-.4.2-.9.4-1.3.5l-.6 2.1h-3.4l-.6-2.1c-.4-.1-.9-.3-1.3-.5l-1.9 1.1-2.4-2.4 1.1-1.9c-.2-.4-.4-.9-.5-1.3l-2.1-.6v-3.4l2.1-.6c.1-.4.3-.9.5-1.3l-1.1-1.9 2.4-2.4 1.9 1.1c.4-.2.9-.4 1.3-.5z"/>
@@ -516,8 +516,7 @@
             refs.tagControl.style.width = isColumn ? "100%" : "9rem";
             refs.sortControl.style.width = isColumn ? "100%" : "7rem";
             refs.countControl.style.width = isColumn ? "100%" : "90px";
-            refs.countControl.style.marginLeft = isColumn ? "0" : "1rem";
-            refs.countControl.style.marginBottom = isColumn ? "0" : "0.75rem";
+            refs.countControl.style.marginBottom = isColumn ? "0" : "0.5rem";
         }
 
         function closeFilterPanels() {
