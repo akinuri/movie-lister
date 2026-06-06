@@ -224,6 +224,20 @@
                             </div>
                         </div>
 
+                        <div id="runtimeControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-32 xl:w-40">
+                            <label for="runtimeToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Runtime</label>
+                            <button id="runtimeToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select runtime ranges" aria-expanded="false">
+                                <span id="runtimeToggleLabel" class="truncate">All</span>
+                                <span class="text-xs opacity-70">▼</span>
+                            </button>
+                            <div id="runtimePanel" class="hidden absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
+                                <div class="mb-2 flex items-center justify-end">
+                                    <button id="runtimeClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
+                                </div>
+                                <div id="runtimeOptions" class="max-h-56 space-y-1 overflow-y-auto pr-1"></div>
+                            </div>
+                        </div>
+
                         <div id="tagControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-36 xl:w-44">
                             <label for="tagToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Tags</label>
                             <button id="tagToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select tags" aria-expanded="false">
@@ -353,12 +367,18 @@
             yearPanel: document.getElementById("yearPanel"),
             yearOptions: document.getElementById("yearOptions"),
             yearClear: document.getElementById("yearClear"),
+            runtimeToggle: document.getElementById("runtimeToggle"),
+            runtimeToggleLabel: document.getElementById("runtimeToggleLabel"),
+            runtimePanel: document.getElementById("runtimePanel"),
+            runtimeOptions: document.getElementById("runtimeOptions"),
+            runtimeClear: document.getElementById("runtimeClear"),
             tagToggle: document.getElementById("tagToggle"),
             tagToggleLabel: document.getElementById("tagToggleLabel"),
             tagPanel: document.getElementById("tagPanel"),
             tagOptions: document.getElementById("tagOptions"),
             tagClear: document.getElementById("tagClear"),
             tagControl: document.getElementById("tagControl"),
+            runtimeControl: document.getElementById("runtimeControl"),
             sortSelect: document.getElementById("sortSelect"),
             themeToggle: document.getElementById("themeToggle"),
             widthToggle: document.getElementById("widthToggle"),
@@ -525,10 +545,12 @@
             types: [],
             genres: [],
             years: [],
+            runtimes: [],
             tags: [],
             selectedTypes: new Set(),
             selectedGenres: new Set(),
             selectedYears: new Set(),
+            selectedRuntimes: new Set(),
             selectedTags: new Set(),
         };
 
@@ -680,6 +702,7 @@
             refs.typeControl.style.width = isColumn ? "100%" : "8rem";
             refs.genreControl.style.width = isColumn ? "100%" : "10rem";
             refs.yearControl.style.width = isColumn ? "100%" : "8rem";
+            refs.runtimeControl.style.width = isColumn ? "100%" : "8rem";
             refs.tagControl.style.width = isColumn ? "100%" : "9rem";
             refs.sortControl.style.width = isColumn ? "100%" : "7rem";
             refs.countControl.style.width = isColumn ? "100%" : "90px";
@@ -691,10 +714,12 @@
             refs.typePanel.classList.add("hidden");
             refs.genrePanel.classList.add("hidden");
             refs.yearPanel.classList.add("hidden");
+            refs.runtimePanel.classList.add("hidden");
             refs.tagPanel.classList.add("hidden");
             refs.typeToggle.setAttribute("aria-expanded", "false");
             refs.genreToggle.setAttribute("aria-expanded", "false");
             refs.yearToggle.setAttribute("aria-expanded", "false");
+            refs.runtimeToggle.setAttribute("aria-expanded", "false");
             refs.tagToggle.setAttribute("aria-expanded", "false");
         }
 
@@ -705,12 +730,14 @@
                 type: refs.typePanel,
                 genre: refs.genrePanel,
                 year: refs.yearPanel,
+                runtime: refs.runtimePanel,
                 tag: refs.tagPanel,
             };
             const toggleMap = {
                 type: refs.typeToggle,
                 genre: refs.genreToggle,
                 year: refs.yearToggle,
+                runtime: refs.runtimeToggle,
                 tag: refs.tagToggle,
             };
 
@@ -728,9 +755,10 @@
             const isType = kind === "type";
             const isGenre = kind === "genre";
             const isYear = kind === "year";
-            const values = isType ? filterState.types : isGenre ? filterState.genres : isYear ? filterState.years : filterState.tags;
-            const selected = isType ? filterState.selectedTypes : isGenre ? filterState.selectedGenres : isYear ? filterState.selectedYears : filterState.selectedTags;
-            const container = isType ? refs.typeOptions : isGenre ? refs.genreOptions : isYear ? refs.yearOptions : refs.tagOptions;
+            const isRuntime = kind === "runtime";
+            const values = isType ? filterState.types : isGenre ? filterState.genres : isYear ? filterState.years : isRuntime ? filterState.runtimes : filterState.tags;
+            const selected = isType ? filterState.selectedTypes : isGenre ? filterState.selectedGenres : isYear ? filterState.selectedYears : isRuntime ? filterState.selectedRuntimes : filterState.selectedTags;
+            const container = isType ? refs.typeOptions : isGenre ? refs.genreOptions : isYear ? refs.yearOptions : isRuntime ? refs.runtimeOptions : refs.tagOptions;
 
             container.innerHTML = values
                 .map((value) => {
@@ -757,6 +785,7 @@
             const selectedTypes = [...filterState.selectedTypes];
             const selectedGenres = [...filterState.selectedGenres];
             const selectedYears = [...filterState.selectedYears];
+            const selectedRuntimes = [...filterState.selectedRuntimes];
             const selectedTags = [...filterState.selectedTags];
 
             refs.typeToggleLabel.textContent =
@@ -779,6 +808,13 @@
                     : selectedYears.length === 1
                         ? selectedYears[0]
                         : `${selectedYears.length} selected`;
+
+            refs.runtimeToggleLabel.textContent =
+                selectedRuntimes.length === 0
+                    ? "All"
+                    : selectedRuntimes.length === 1
+                        ? selectedRuntimes[0]
+                        : `${selectedRuntimes.length} selected`;
 
             refs.tagToggleLabel.textContent =
                 selectedTags.length === 0
@@ -804,6 +840,11 @@
                 setFilterPanelOpen("year", isOpening);
             });
 
+            refs.runtimeToggle.addEventListener("click", () => {
+                const isOpening = refs.runtimePanel.classList.contains("hidden");
+                setFilterPanelOpen("runtime", isOpening);
+            });
+
             refs.tagToggle.addEventListener("click", () => {
                 const isOpening = refs.tagPanel.classList.contains("hidden");
                 setFilterPanelOpen("tag", isOpening);
@@ -818,6 +859,10 @@
             });
 
             refs.yearControl.addEventListener("click", (event) => {
+                event.stopPropagation();
+            });
+
+            refs.runtimeControl.addEventListener("click", (event) => {
                 event.stopPropagation();
             });
 
@@ -913,6 +958,28 @@
                 applyFilters();
             });
 
+            refs.runtimeOptions.addEventListener("click", (event) => {
+                const option = event.target.closest("button[data-value]");
+                if (!option) {
+                    return;
+                }
+
+                const value = option.dataset.value || "";
+                if (!value) {
+                    return;
+                }
+
+                if (filterState.selectedRuntimes.has(value)) {
+                    filterState.selectedRuntimes.delete(value);
+                } else {
+                    filterState.selectedRuntimes.add(value);
+                }
+
+                renderMultiOptions("runtime");
+                updateMultiToggleLabels();
+                applyFilters();
+            });
+
             refs.genreClear.addEventListener("click", () => {
                 filterState.selectedGenres.clear();
                 renderMultiOptions("genre");
@@ -923,6 +990,13 @@
             refs.yearClear.addEventListener("click", () => {
                 filterState.selectedYears.clear();
                 renderMultiOptions("year");
+                updateMultiToggleLabels();
+                applyFilters();
+            });
+
+            refs.runtimeClear.addEventListener("click", () => {
+                filterState.selectedRuntimes.clear();
+                renderMultiOptions("runtime");
                 updateMultiToggleLabels();
                 applyFilters();
             });
@@ -944,7 +1018,7 @@
             document.addEventListener("click", (event) => {
                 const target = event.target;
                 const isElement = target instanceof Element;
-                const insideControl = isElement && target.closest("#typeControl, #genreControl, #yearControl, #tagControl");
+                const insideControl = isElement && target.closest("#typeControl, #genreControl, #yearControl, #runtimeControl, #tagControl");
 
                 if (!insideControl) {
                     closeFilterPanels();
@@ -1255,10 +1329,43 @@
             img.src = posterFallbackDataUri();
         }
 
+        function runtimeBucketLabel(runtimeValue) {
+            const match = String(runtimeValue || "").match(/(\d+)\s*min/i);
+            if (!match) {
+                return "";
+            }
+            const mins = Number.parseInt(match[1], 10);
+            if (!Number.isFinite(mins)) {
+                return "";
+            }
+            const bucketStart = Math.round(mins / 10) * 10;
+            const hours = Math.floor(bucketStart / 60);
+            const minutes = bucketStart % 60;
+            return `${hours}h ${minutes}m`;
+        }
+
+        function parseRuntimeBucketLabelMinutes(label) {
+            const hmMatch = String(label || "").match(/^(\d+)h\s+(\d+)m$/i);
+            if (hmMatch) {
+                const hours = Number.parseInt(hmMatch[1], 10);
+                const minutes = Number.parseInt(hmMatch[2], 10);
+                return (Number.isFinite(hours) ? hours : 0) * 60 + (Number.isFinite(minutes) ? minutes : 0);
+            }
+
+            const mMatch = String(label || "").match(/^(\d+)m$/i);
+            if (mMatch) {
+                const minutes = Number.parseInt(mMatch[1], 10);
+                return Number.isFinite(minutes) ? minutes : 0;
+            }
+
+            return 0;
+        }
+
         function fillFilterOptions(movies) {
             const types = new Set();
             const genres = new Set();
             const years = new Set();
+            const runtimes = new Set();
             const tags = new Set();
 
             for (const movie of movies) {
@@ -1277,17 +1384,28 @@
                     years.add(String(movie.Year));
                 }
 
+                const runtimeBucket = runtimeBucketLabel(movie.Runtime);
+                if (runtimeBucket) {
+                    runtimes.add(runtimeBucket);
+                }
+
                 sanitizeTagList(movie.Tags).forEach((tag) => tags.add(tag));
             }
 
             const sortedTypes = [...types].sort((a, b) => a.localeCompare(b));
             const sortedGenres = [...genres].sort((a, b) => a.localeCompare(b));
             const sortedYears = [...years].sort((a, b) => Number(b) - Number(a));
+            const sortedRuntimes = [...runtimes].sort((a, b) => {
+                const aStart = parseRuntimeBucketLabelMinutes(a);
+                const bStart = parseRuntimeBucketLabelMinutes(b);
+                return bStart - aStart;
+            });
             const sortedTags = [...tags].sort((a, b) => a.localeCompare(b));
 
             filterState.types = sortedTypes;
             filterState.genres = sortedGenres;
             filterState.years = sortedYears;
+            filterState.runtimes = sortedRuntimes;
             filterState.tags = [TAG_FILTER_UNTAGGED, ...sortedTags];
 
             for (const value of [...filterState.selectedTypes]) {
@@ -1308,6 +1426,12 @@
                 }
             }
 
+            for (const value of [...filterState.selectedRuntimes]) {
+                if (!filterState.runtimes.includes(value)) {
+                    filterState.selectedRuntimes.delete(value);
+                }
+            }
+
             for (const value of [...filterState.selectedTags]) {
                 if (!filterState.tags.includes(value)) {
                     filterState.selectedTags.delete(value);
@@ -1317,6 +1441,7 @@
             renderMultiOptions("type");
             renderMultiOptions("genre");
             renderMultiOptions("year");
+            renderMultiOptions("runtime");
             renderMultiOptions("tag");
             updateMultiToggleLabels();
             fillLetterOptions(movies);
@@ -1327,6 +1452,7 @@
             const selectedTypes = [...filterState.selectedTypes];
             const selectedGenres = [...filterState.selectedGenres];
             const selectedYears = [...filterState.selectedYears];
+            const selectedRuntimes = [...filterState.selectedRuntimes];
             const selectedTags = [...filterState.selectedTags];
             const sort = refs.sortSelect.value;
 
@@ -1340,9 +1466,11 @@
                 const movieType = String(movie.Type || "").trim();
                 const movieGenres = String(movie.Genre || "").split(",").map((g) => g.trim()).filter(Boolean);
                 const movieYear = String(movie.Year || "");
+                const movieRuntimeBucket = runtimeBucketLabel(movie.Runtime);
                 const matchesType = !selectedTypes.length || selectedTypes.includes(movieType);
                 const matchesGenre = !selectedGenres.length || selectedGenres.some((genre) => movieGenres.includes(genre));
                 const matchesYear = !selectedYears.length || selectedYears.includes(movieYear);
+                const matchesRuntime = !selectedRuntimes.length || (movieRuntimeBucket && selectedRuntimes.includes(movieRuntimeBucket));
                 const matchesTag =
                     !selectedTags.length ||
                     selectedTags.some((tag) => {
@@ -1377,7 +1505,7 @@
                         }
                     }
                 }
-                return matchesQuery && matchesType && matchesGenre && matchesYear && matchesTag && matchesLetter;
+                return matchesQuery && matchesType && matchesGenre && matchesYear && matchesRuntime && matchesTag && matchesLetter;
             });
 
             result = result.sort((a, b) => {
