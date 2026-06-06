@@ -36,8 +36,8 @@
     <main class="min-h-screen w-full">
         <div class="min-h-screen">
             <aside id="filtersAside" class="sticky top-8 z-20 mx-4 mt-4 mb-0 rounded-xl border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%/0.72)] px-3 pb-3 pt-3 shadow-[0_4px_10px_hsl(32_58%_13%/0.12)] backdrop-blur-md transition-[transform,opacity,box-shadow] duration-500 ease-in-out dark:border-[hsl(220_16%_27%)] dark:bg-[hsl(222_20%_16%/0.85)] dark:shadow-[0_4px_14px_hsl(220_45%_5%/0.45)] md:mx-8 md:mt-8 md:mb-0 md:px-5 md:pb-5 md:pt-4" aria-label="Filters">
-                <section class="flex flex-wrap items-end justify-center gap-4">
-                    <div id="filtersControlsGroup" class="flex w-full min-w-0 flex-wrap items-end gap-3 lg:w-auto lg:flex-none lg:min-w-0 lg:flex-nowrap">
+                <section class="flex w-full flex-col gap-6">
+                    <div id="filtersControlsGroup" class="flex w-full min-w-0 flex-wrap items-end justify-center gap-3 lg:min-w-0 lg:flex-nowrap">
 
                         <div id="searchControl" class="flex w-full flex-col gap-1.5 lg:w-[16rem]">
                             <label for="searchInput" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Search title, actor, director</label>
@@ -144,11 +144,13 @@
                         <div id="countControl" class="flex w-[90px] items-end mb-3 ml-4 opacity-50">
                             <span id="resultsCount">0 Titles</span>
                         </div>
+
+                        <div id="controlsToggleControl" class="flex w-[46px] items-end">
+                            <button id="controlsToggle" type="button" class="inline-flex h-[42px] w-[46px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-lg leading-none text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Show control buttons" aria-pressed="false" title="Show controls">⚙</button>
+                        </div>
                     </div>
 
-                    <div class="hidden lg:block lg:w-px lg:self-stretch lg:bg-[linear-gradient(to_bottom,transparent_0%,hsl(34_33%_78%)_16%,hsl(34_33%_78%)_84%,transparent_100%)] dark:lg:bg-[linear-gradient(to_bottom,transparent_0%,hsl(220_15%_35%)_16%,hsl(220_15%_35%)_84%,transparent_100%)] mx-4 opacity-75"></div>
-
-                    <div class="flex w-full flex-wrap items-end gap-3 lg:w-auto lg:flex-none lg:ml-4">
+                    <div id="controlsRow" class="hidden w-full flex-wrap items-end justify-center gap-3">
                     
                         <div id="infoToggleControl" class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-auto lg:ml-4">
                             <label for="infoToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Info</label>
@@ -227,6 +229,8 @@
             themeToggle: document.getElementById("themeToggle"),
             widthToggle: document.getElementById("widthToggle"),
             exportJsonButton: document.getElementById("exportJsonButton"),
+            controlsToggle: document.getElementById("controlsToggle"),
+            controlsRow: document.getElementById("controlsRow"),
             filtersControlsGroup: document.getElementById("filtersControlsGroup"),
             searchControl: document.getElementById("searchControl"),
             typeControl: document.getElementById("typeControl"),
@@ -371,6 +375,10 @@
             mode: "boxed",
         };
 
+        const controlsState = {
+            visible: false,
+        };
+
         const filterState = {
             types: [],
             genres: [],
@@ -443,6 +451,35 @@
                 return saved;
             }
             return "boxed";
+        }
+
+        function getPreferredControlsVisibility() {
+            const saved = localStorage.getItem("filters-controls-visible");
+            if (saved === "true") {
+                return true;
+            }
+            if (saved === "false") {
+                return false;
+            }
+            return false;
+        }
+
+        function applyControlsVisibility(isVisible) {
+            controlsState.visible = isVisible;
+            refs.controlsRow.classList.toggle("hidden", !isVisible);
+            refs.controlsRow.classList.toggle("flex", isVisible);
+            refs.controlsToggle.setAttribute("aria-pressed", String(isVisible));
+            refs.controlsToggle.setAttribute("aria-label", isVisible ? "Hide control buttons" : "Show control buttons");
+            refs.controlsToggle.title = isVisible ? "Hide controls" : "Show controls";
+        }
+
+        function wireControlsToggle() {
+            applyControlsVisibility(getPreferredControlsVisibility());
+            refs.controlsToggle.addEventListener("click", () => {
+                const next = !controlsState.visible;
+                localStorage.setItem("filters-controls-visible", String(next));
+                applyControlsVisibility(next);
+            });
         }
 
         function getEffectiveGridWidthMode() {
@@ -1554,6 +1591,7 @@
 
         async function init() {
             wireTheme();
+            wireControlsToggle();
             wireGridWidthToggle();
             wireMultiSelectControls();
             wireLetterMultiSelectControl();
