@@ -30,6 +30,130 @@
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
+
+        #grid.list-view {
+            grid-template-columns: minmax(0, 1fr) !important;
+        }
+
+        #grid.list-view .movie-card {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            background-color: hsl(40 100% 99% / 0.68);
+        }
+
+        .dark #grid.list-view .movie-card {
+            background-color: hsl(220 14% 17% / 0.9);
+        }
+
+        #grid.list-view .movie-poster {
+            width: clamp(96px, 12vw, 120px);
+            flex: 0 0 auto;
+        }
+
+        #grid.list-view .movie-body {
+            flex: 1 1 auto;
+            align-self: auto;
+            display: flex !important;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+            padding: 12px 14px;
+            background: transparent !important;
+        }
+
+        #grid.list-view .movie-top-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 4rem;
+            width: 100%;
+        }
+
+        #grid.list-view .movie-title {
+            flex: 0 1 auto;
+            min-width: 0;
+            max-width: min(56ch, 100%);
+            line-height: 1.3;
+        }
+
+        #grid.list-view .movie-meta {
+            flex: 0 0 auto;
+            white-space: nowrap;
+            margin: 0;
+        }
+
+        #grid.list-view .movie-stars {
+            flex: 0 1 auto;
+            min-width: 0;
+            margin: 0;
+        }
+
+        #grid.list-view .movie-stars .no-scrollbar {
+            overflow-x: auto;
+            overflow-y: hidden;
+            flex: 1 1 auto;
+            max-width: none;
+        }
+
+        #grid.list-view .movie-genres {
+            flex: 0 1 auto;
+            margin: 0;
+        }
+
+        #grid .movie-plot-list {
+            display: none;
+        }
+
+        #grid.list-view .movie-plot-grid {
+            display: none !important;
+        }
+
+        #grid.list-view .movie-plot-list {
+            display: block !important;
+            flex: 0 0 100%;
+            margin-top: 10px;
+            overflow: visible !important;
+            -webkit-line-clamp: unset !important;
+            -webkit-box-orient: initial !important;
+        }
+
+        #grid.list-view .movie-plot {
+            flex: 0 0 100%;
+            margin-top: 10px;
+        }
+
+        #grid.list-view .movie-tags {
+            flex: 0 0 100%;
+            display: flex !important;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 980px) {
+            #grid.list-view .movie-title {
+                max-width: 100%;
+            }
+
+            #grid.list-view .movie-stars {
+                min-width: 0;
+            }
+        }
+
+        @media (max-width: 860px) {
+            #grid.list-view .movie-body {
+                gap: 8px;
+            }
+
+            #grid.list-view .movie-title,
+            #grid.list-view .movie-meta,
+            #grid.list-view .movie-stars,
+            #grid.list-view .movie-genres,
+            #grid.list-view .movie-plot,
+            #grid.list-view .movie-tags {
+                flex-basis: 100%;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen bg-[hsl(37_39%_87%)] text-[hsl(30_13%_10%)] pb-[calc(4rem_+_5vh)] dark:bg-[hsl(220_18%_12%)] dark:text-[hsl(43_33%_92%)]">
@@ -173,6 +297,11 @@
                         </div>
 
                         <div class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-auto">
+                            <label for="cardViewToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">View</label>
+                            <button id="cardViewToggle" type="button" class="inline-flex h-[42px] w-[62px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Switch card view" aria-pressed="false">Grid</button>
+                        </div>
+
+                        <div class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-auto">
                             <label for="exportJsonButton" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Data</label>
                             <button id="exportJsonButton" type="button" class="inline-flex h-[42px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Download edited movies JSON">Download</button>
                         </div>
@@ -233,6 +362,7 @@
             sortSelect: document.getElementById("sortSelect"),
             themeToggle: document.getElementById("themeToggle"),
             widthToggle: document.getElementById("widthToggle"),
+            cardViewToggle: document.getElementById("cardViewToggle"),
             exportJsonButton: document.getElementById("exportJsonButton"),
             controlsToggle: document.getElementById("controlsToggle"),
             controlsRow: document.getElementById("controlsRow"),
@@ -380,6 +510,10 @@
             mode: "boxed",
         };
 
+        const cardViewState = {
+            mode: "grid",
+        };
+
         const controlsState = {
             visible: false,
         };
@@ -457,6 +591,36 @@
                 return saved;
             }
             return "boxed";
+        }
+
+        function getPreferredCardViewMode() {
+            const saved = localStorage.getItem("card-view-mode");
+            if (saved === "list" || saved === "grid") {
+                return saved;
+            }
+            return "grid";
+        }
+
+        function updateCardViewToggleLabel() {
+            const current = cardViewState.mode === "list" ? "list" : "grid";
+            refs.cardViewToggle.textContent = current === "list" ? "List" : "Grid";
+            refs.cardViewToggle.setAttribute("aria-pressed", String(current === "list"));
+        }
+
+        function applyCardView(mode) {
+            const resolved = mode === "list" ? "list" : "grid";
+            cardViewState.mode = resolved;
+            refs.grid.classList.toggle("list-view", resolved === "list");
+            updateCardViewToggleLabel();
+        }
+
+        function wireCardViewToggle() {
+            applyCardView(getPreferredCardViewMode());
+            refs.cardViewToggle.addEventListener("click", () => {
+                const next = cardViewState.mode === "list" ? "grid" : "list";
+                localStorage.setItem("card-view-mode", next);
+                applyCardView(next);
+            });
         }
 
         function getPreferredControlsVisibility() {
@@ -1324,24 +1488,27 @@
             const remotePoster = escapeHtml(movie.Poster || "");
 
             return `
-                <article class="group flex min-h-full flex-col overflow-hidden rounded-xl border border-[hsl(32_32%_75%)] shadow-[0_8px_20px_hsl(32_58%_13%/0.12)] transform-gpu hover:scale-[1.01] hover:shadow-[0_14px_28px_hsl(32_58%_13%/0.22)] dark:border-[hsl(220_15%_27%)] dark:shadow-[0_8px_24px_hsl(220_45%_5%/0.5)] dark:hover:shadow-[0_14px_30px_hsl(220_48%_3%/0.72)]">
-                    <img class="aspect-[2/3] w-full object-cover bg-[hsl(37_43%_90%)] dark:bg-[hsl(220_15%_20%)]" loading="lazy" src="${posterPath(movie)}" alt="${title} poster" data-imdb="${imdb}" data-poster-url="${remotePoster}" data-step="0" onerror="handlePosterError(this)" />
-                    <div class="flex flex-1 flex-col gap-2 bg-[hsl(40_100%_99%/0.68)] p-4 group-hover:bg-[hsl(40_100%_99%/0.96)] dark:bg-[hsl(220_14%_17%/0.9)] dark:group-hover:bg-[hsl(220_14%_21%/0.95)]" style="display:${infoVisible ? "flex" : "none"}">
-                        <h2 class="m-0 text-[1.2rem] font-medium leading-6 text-[hsl(24_17%_10%)] dark:text-[hsl(43_33%_92%)]">${imdbUrl ? `<a href="${imdbUrl}" target="_blank" rel="noopener noreferrer" class="text-[hsl(208_72%_36%)] hover:text-[hsl(208_78%_30%)] hover:underline hover:underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(208_72%_36%/0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(40_100%_99%)] dark:text-[hsl(198_84%_71%)] dark:hover:text-[hsl(198_92%_80%)] dark:focus-visible:ring-[hsl(198_84%_71%/0.35)] dark:focus-visible:ring-offset-[hsl(220_14%_18%)]">${title}</a>` : title}</h2>
-                        <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.95rem] leading-7 text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">
-                            <span>${escapeHtml(year)}</span>
-                            <span aria-hidden="true">&middot;</span>
-                            <span>${escapeHtml(runtime)}</span>
-                            <span aria-hidden="true">&middot;</span>
-                            <span class="${ratingTone}"><span style="font-size:1.1em;line-height:1;display:inline-block;">★</span> ${ratingWithVotes}</span>
+                <article class="movie-card group flex min-h-full flex-col overflow-hidden rounded-xl border border-[hsl(32_32%_75%)] shadow-[0_8px_20px_hsl(32_58%_13%/0.12)] transform-gpu hover:scale-[1.01] hover:shadow-[0_14px_28px_hsl(32_58%_13%/0.22)] dark:border-[hsl(220_15%_27%)] dark:shadow-[0_8px_24px_hsl(220_45%_5%/0.5)] dark:hover:shadow-[0_14px_30px_hsl(220_48%_3%/0.72)]">
+                    <img class="movie-poster aspect-[2/3] w-full object-cover bg-[hsl(37_43%_90%)] dark:bg-[hsl(220_15%_20%)]" loading="lazy" src="${posterPath(movie)}" alt="${title} poster" data-imdb="${imdb}" data-poster-url="${remotePoster}" data-step="0" onerror="handlePosterError(this)" />
+                    <div class="movie-body flex flex-1 flex-col gap-2 bg-[hsl(40_100%_99%/0.68)] p-4 group-hover:bg-[hsl(40_100%_99%/0.96)] dark:bg-[hsl(220_14%_17%/0.9)] dark:group-hover:bg-[hsl(220_14%_21%/0.95)]" style="display:${infoVisible ? "flex" : "none"}">
+                        <div class="movie-top-row">
+                            <h2 class="movie-title m-0 text-[1.2rem] font-medium leading-6 text-[hsl(24_17%_10%)] dark:text-[hsl(43_33%_92%)]">${imdbUrl ? `<a href="${imdbUrl}" target="_blank" rel="noopener noreferrer" class="text-[hsl(208_72%_36%)] hover:text-[hsl(208_78%_30%)] hover:underline hover:underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(208_72%_36%/0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(40_100%_99%)] dark:text-[hsl(198_84%_71%)] dark:hover:text-[hsl(198_92%_80%)] dark:focus-visible:ring-[hsl(198_84%_71%/0.35)] dark:focus-visible:ring-offset-[hsl(220_14%_18%)]">${title}</a>` : title}</h2>
+                            <div class="movie-meta flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.95rem] leading-7 text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">
+                                <span>${escapeHtml(year)}</span>
+                                <span aria-hidden="true">&middot;</span>
+                                <span>${escapeHtml(runtime)}</span>
+                                <span aria-hidden="true">&middot;</span>
+                                <span class="${ratingTone}"><span style="font-size:1.1em;line-height:1;display:inline-block;">★</span> ${ratingWithVotes}</span>
+                            </div>
+                            <div class="movie-stars flex items-center gap-2" title="${escapeHtml(movie.Actors || "Actors unavailable")}">
+                                <span class="shrink-0 text-[0.9rem] text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">Stars:</span>
+                                <div class="no-scrollbar flex min-w-0 flex-1 flex-nowrap items-center gap-2 overflow-x-auto whitespace-nowrap" style="-ms-overflow-style:none;scrollbar-width:none;">${actorPills}</div>
+                            </div>
+                            <div class="movie-genres flex flex-wrap gap-2 my-1">${genres}</div>
                         </div>
-                        <div class="flex items-center gap-2" title="${escapeHtml(movie.Actors || "Actors unavailable")}">
-                            <span class="shrink-0 text-[0.9rem] text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">Stars:</span>
-                            <div class="no-scrollbar flex min-w-0 flex-1 flex-nowrap items-center gap-2 overflow-x-auto whitespace-nowrap" style="-ms-overflow-style:none;scrollbar-width:none;">${actorPills}</div>
-                        </div>
-                        <div class="flex flex-wrap gap-2 my-1">${genres}</div>
-                        <p class="m-0 text-[0.95rem] leading-[1.45] text-[hsl(30_14%_24%)] dark:text-[hsl(40_16%_82%)]" title="${fullPlot}" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${plot}</p>
-                        <div class="mt-2 flex flex-wrap items-center gap-2 border-t border-[hsl(32_32%_75%_/_50%)] pt-3 dark:border-[hsl(220_15%_27%)]">
+                        <p class="movie-plot movie-plot-grid m-0 text-[0.95rem] leading-[1.45] text-[hsl(30_14%_24%)] dark:text-[hsl(40_16%_82%)]" title="${fullPlot}" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${plot}</p>
+                        <p class="movie-plot movie-plot-list m-0 text-[0.95rem] leading-[1.45] text-[hsl(30_14%_24%)] dark:text-[hsl(40_16%_82%)]" title="${fullPlot}">${fullPlot}</p>
+                        <div class="movie-tags mt-2 flex flex-wrap items-center gap-2 border-t border-[hsl(32_32%_75%_/_50%)] pt-3 dark:border-[hsl(220_15%_27%)]">
                             ${tagPills}
                             <span class="inline-flex h-8 overflow-hidden rounded-full border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)]">
                                 <input type="text" data-tag-input="${movieKey}" class="h-full w-20 bg-transparent px-3 text-xs text-[hsl(30_13%_10%)] outline-none ring-0 dark:text-[hsl(45_35%_93%)]" placeholder="Add tag" maxlength="32" />
@@ -1608,6 +1775,7 @@
             wireTheme();
             wireControlsToggle();
             wireGridWidthToggle();
+            wireCardViewToggle();
             wireMultiSelectControls();
             wireLetterMultiSelectControl();
             wireTagEditors();
