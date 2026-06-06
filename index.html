@@ -1531,10 +1531,28 @@
                     return Number(a.Year || 0) - Number(b.Year || 0);
                 }
                 if (sort === "rating-desc") {
-                    return parseNumber(b.imdbRating) - parseNumber(a.imdbRating);
+                    const ar = parseNumber(a.imdbRating);
+                    const br = parseNumber(b.imdbRating);
+                    const aMissing = !Number.isFinite(ar);
+                    const bMissing = !Number.isFinite(br);
+                    if (aMissing && bMissing) {
+                        return normalizeSortTitle(a.Title).localeCompare(normalizeSortTitle(b.Title));
+                    }
+                    if (aMissing) return 1;
+                    if (bMissing) return -1;
+                    return br - ar;
                 }
                 if (sort === "rating-asc") {
-                    return parseNumber(a.imdbRating) - parseNumber(b.imdbRating);
+                    const ar = parseNumber(a.imdbRating);
+                    const br = parseNumber(b.imdbRating);
+                    const aMissing = !Number.isFinite(ar);
+                    const bMissing = !Number.isFinite(br);
+                    if (aMissing && bMissing) {
+                        return normalizeSortTitle(a.Title).localeCompare(normalizeSortTitle(b.Title));
+                    }
+                    if (aMissing) return 1;
+                    if (bMissing) return -1;
+                    return ar - br;
                 }
                 if (sort === "votes-desc" || sort === "votes-asc") {
                     const getVotes = (m) => {
