@@ -399,6 +399,7 @@
             lastScrollY: window.scrollY,
             lastState: "shown", // "shown" or "hidden"
             lastStateY: window.scrollY,
+            suppressScrollHideUntil: 0,
         };
 
         function getSystemMode() {
@@ -471,6 +472,11 @@
             refs.controlsToggle.setAttribute("aria-pressed", String(isVisible));
             refs.controlsToggle.setAttribute("aria-label", isVisible ? "Hide control buttons" : "Show control buttons");
             refs.controlsToggle.title = isVisible ? "Hide controls" : "Show controls";
+
+            // Expanding/collapsing the controls row can nudge scroll position; don't treat that as user scroll.
+            layoutState.suppressScrollHideUntil = performance.now() + 300;
+            layoutState.lastScrollY = window.scrollY;
+            layoutState.lastStateY = window.scrollY;
         }
 
         function wireControlsToggle() {
@@ -795,6 +801,11 @@
         }
 
         function updateFiltersScrollVisibility() {
+            if (performance.now() < layoutState.suppressScrollHideUntil) {
+                layoutState.lastScrollY = window.scrollY;
+                return;
+            }
+
             const currentScrollY = window.scrollY;
             if (typeof layoutState.lastScrollY !== "number") layoutState.lastScrollY = currentScrollY;
             if (typeof layoutState.lastState !== "string") layoutState.lastState = "shown";
