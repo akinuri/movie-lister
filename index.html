@@ -428,6 +428,9 @@
         function wireLetterMultiSelectControl() {
             refs.letterToggle.addEventListener("click", () => {
                 const isOpening = refs.letterPanel.classList.contains("hidden");
+                if (isOpening) {
+                    closeFilterPanels();
+                }
                 setLetterPanelOpen(isOpening);
             });
 
@@ -684,6 +687,7 @@
         }
 
         function closeFilterPanels() {
+            setLetterPanelOpen(false);
             refs.typePanel.classList.add("hidden");
             refs.genrePanel.classList.add("hidden");
             refs.yearPanel.classList.add("hidden");
@@ -695,6 +699,8 @@
         }
 
         function setFilterPanelOpen(name, isOpen) {
+            setLetterPanelOpen(false);
+
             const panelMap = {
                 type: refs.typePanel,
                 genre: refs.genrePanel,
