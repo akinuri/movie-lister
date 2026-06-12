@@ -1216,6 +1216,21 @@
             URL.revokeObjectURL(link.href);
         }
 
+        function removeMovieByKey(movieKey) {
+            if (!movieKey) {
+                return;
+            }
+
+            const index = state.movies.findIndex((movie) => movie._movieKey === movieKey);
+            if (index < 0) {
+                return;
+            }
+
+            state.movies.splice(index, 1);
+            fillFilterOptions(state.movies);
+            applyFilters();
+        }
+
         function formatCompactCount(value) {
             if (!Number.isFinite(value)) {
                 return "";
@@ -1638,9 +1653,11 @@
             const imdbIdRaw = String(movie.imdbID || "").trim();
             const imdbUrl = /^tt\d+$/.test(imdbIdRaw) ? `https://www.imdb.com/title/${imdbIdRaw}/` : "";
             const remotePoster = escapeHtml(movie.Poster || "");
+            const removeLabel = `Remove ${title} from records`;
 
             return `
-                <article class="movie-card group flex min-h-full flex-col overflow-hidden rounded-xl border border-[hsl(32_32%_75%)] shadow-[0_8px_20px_hsl(32_58%_13%/0.12)] transform-gpu hover:scale-[1.01] hover:shadow-[0_14px_28px_hsl(32_58%_13%/0.22)] dark:border-[hsl(220_15%_27%)] dark:shadow-[0_8px_24px_hsl(220_45%_5%/0.5)] dark:hover:shadow-[0_14px_30px_hsl(220_48%_3%/0.72)]">
+                <article class="movie-card group relative flex min-h-full flex-col overflow-hidden rounded-xl border border-[hsl(32_32%_75%)] shadow-[0_8px_20px_hsl(32_58%_13%/0.12)] transform-gpu hover:scale-[1.01] hover:shadow-[0_14px_28px_hsl(32_58%_13%/0.22)] dark:border-[hsl(220_15%_27%)] dark:shadow-[0_8px_24px_hsl(220_45%_5%/0.5)] dark:hover:shadow-[0_14px_30px_hsl(220_48%_3%/0.72)]">
+                    <button type="button" data-movie-remove="${movieKey}" class="absolute right-2 top-2 z-20 inline-flex h-6 w-6 items-center justify-center rounded-full border border-[hsl(0_65%_44%_/_45%)] bg-[hsl(0_85%_97%_/_72%)] text-[hsl(0_65%_38%)] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto shadow-[0_2px_8px_hsl(0_50%_16%/0.16)] hover:bg-[hsl(0_90%_94%_/_88%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(0_72%_42%/0.35)] dark:border-[hsl(0_68%_55%_/_50%)] dark:bg-[hsl(0_44%_20%_/_68%)] dark:text-[hsl(0_84%_82%)] dark:hover:bg-[hsl(0_40%_25%_/_86%)]" title="${removeLabel}" aria-label="${removeLabel}"><svg class="h-3 w-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
                     <img class="movie-poster aspect-[2/3] w-full object-cover bg-[hsl(37_43%_90%)] dark:bg-[hsl(220_15%_20%)]" loading="lazy" src="${posterPath(movie)}" alt="${title} poster" data-imdb="${imdb}" data-poster-url="${remotePoster}" data-step="0" onerror="handlePosterError(this)" />
                     <div class="movie-body flex flex-1 flex-col gap-2 bg-[hsl(40_100%_99%/0.68)] p-4 group-hover:bg-[hsl(40_100%_99%/0.96)] dark:bg-[hsl(220_14%_17%/0.9)] dark:group-hover:bg-[hsl(220_14%_21%/0.95)]" style="display:${infoVisible ? "flex" : "none"}">
                         <div class="movie-top-row flex flex-col gap-2">
@@ -1844,6 +1861,12 @@
             refs.grid.addEventListener("click", (event) => {
                 const target = event.target;
                 if (!(target instanceof Element)) {
+                    return;
+                }
+
+                const removeMovieButton = target.closest("button[data-movie-remove]");
+                if (removeMovieButton) {
+                    removeMovieByKey(removeMovieButton.dataset.movieRemove || "");
                     return;
                 }
 
