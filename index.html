@@ -1982,7 +1982,11 @@
         }
 
         function wireEvents() {
-            refs.searchInput.addEventListener("input", applyFilters);
+            let searchDebounceTimeout;
+            refs.searchInput.addEventListener("input", () => {
+                clearTimeout(searchDebounceTimeout);
+                searchDebounceTimeout = setTimeout(applyFilters, 500);
+            });
             refs.sortSelect.addEventListener("change", applyFilters);
             // Wire up ignore articles checkbox
             const cb = document.getElementById("ignoreArticlesCheckbox");
