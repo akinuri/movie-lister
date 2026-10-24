@@ -1436,6 +1436,20 @@
             filterState.runtimes = sortedRuntimes;
             filterState.tags = [TAG_FILTER_UNTAGGED, ...sortedTags];
 
+            let tagList = document.getElementById("tagSuggestions");
+            if (!tagList) {
+                tagList = document.createElement("datalist");
+                tagList.id = "tagSuggestions";
+                document.body.appendChild(tagList);
+            }
+            tagList.replaceChildren(
+                ...sortedTags.map((tag) => {
+                    const option = document.createElement("option");
+                    option.value = tag;
+                    return option;
+                }),
+            );
+
             for (const value of [...filterState.selectedTypes]) {
                 if (!filterState.types.includes(value)) {
                     filterState.selectedTypes.delete(value);
@@ -1730,7 +1744,7 @@
                         <div class="movie-tags mt-2 flex flex-wrap items-center gap-2 border-t border-[hsl(32_32%_75%_/_50%)] pt-3 dark:border-[hsl(220_15%_27%)]">
                             ${tagPills}
                             <span class="inline-flex h-8 overflow-hidden rounded-full border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)]">
-                                <input type="text" data-tag-input="${movieKey}" class="h-full w-20 bg-transparent px-3 text-xs text-[hsl(30_13%_10%)] outline-none ring-0 dark:text-[hsl(45_35%_93%)]" placeholder="Add tag" maxlength="32" />
+                                <input type="text" data-tag-input="${movieKey}" list="tagSuggestions" autocomplete="off" class="h-full w-20 bg-transparent px-3 text-xs text-[hsl(30_13%_10%)] outline-none ring-0 dark:text-[hsl(45_35%_93%)]" placeholder="Add tag" maxlength="32" />
                                 <button type="button" data-tag-add="${movieKey}" class="inline-flex min-h-full items-center justify-center border-l border-[hsl(34_33%_84%)] bg-[hsl(36_33%_94%)] px-2.5 text-xs text-[hsl(30_13%_10%)] hover:bg-[hsl(36_37%_90%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.35)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_14%_26%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_30%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)]" aria-label="Add tag">+</button>
                             </span>
                         </div>
