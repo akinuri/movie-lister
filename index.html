@@ -170,17 +170,34 @@
                 <section class="flex w-full flex-col gap-6">
                     <div id="filtersControlsGroup" class="flex w-full min-w-0 flex-wrap items-end justify-center gap-3 lg:min-w-0 lg:flex-nowrap">
 
-                        <div id="searchControl" class="flex w-full flex-col gap-1.5 lg:w-[16rem]">
-                            <label for="searchInput" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Search title, actor, director</label>
-                            <input id="searchInput" type="search" placeholder="hemsworth, ambulance, nicolai" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:placeholder:text-[hsl(38_12%_63%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" />
+                        <!-- Filters Dropdown Button (FIRST) -->
+                        <div id="filtersMenuControl" class="relative flex w-full flex-col gap-1.5 sm:w-auto lg:w-auto">
+                            <label for="filtersMenuToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Filters</label>
+                            <button id="filtersMenuToggle" type="button" class="inline-flex h-[42px] items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Show filters menu" aria-expanded="false">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                                <span class="text-xs opacity-70 ml-2">▼</span>
+                            </button>
+                            <div id="filtersMenu" class="hidden absolute left-0 top-[calc(100%+0.4rem)] z-30 w-48 rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
+                                <button type="button" data-filter="letter" class="filter-menu-item w-full text-left rounded-md px-3 py-2 text-sm hover:bg-[hsl(36_33%_94%)] dark:hover:bg-[hsl(220_14%_24%)]">Title Letter</button>
+                                <button type="button" data-filter="type" class="filter-menu-item w-full text-left rounded-md px-3 py-2 text-sm hover:bg-[hsl(36_33%_94%)] dark:hover:bg-[hsl(220_14%_24%)]">Type</button>
+                                <button type="button" data-filter="genre" class="filter-menu-item w-full text-left rounded-md px-3 py-2 text-sm hover:bg-[hsl(36_33%_94%)] dark:hover:bg-[hsl(220_14%_24%)]">Genre</button>
+                                <button type="button" data-filter="year" class="filter-menu-item w-full text-left rounded-md px-3 py-2 text-sm hover:bg-[hsl(36_33%_94%)] dark:hover:bg-[hsl(220_14%_24%)]">Year</button>
+                                <button type="button" data-filter="runtime" class="filter-menu-item w-full text-left rounded-md px-3 py-2 text-sm hover:bg-[hsl(36_33%_94%)] dark:hover:bg-[hsl(220_14%_24%)]">Runtime</button>
+                                <button type="button" data-filter="tag" class="filter-menu-item w-full text-left rounded-md px-3 py-2 text-sm hover:bg-[hsl(36_33%_94%)] dark:hover:bg-[hsl(220_14%_24%)]">Tags</button>
+                            </div>
                         </div>
 
-                        <div id="letterControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-24 xl:w-32">
+                        <div id="letterControl" class="relative hidden w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-24 xl:w-32">
                             <label for="letterToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Title Letter</label>
-                            <button id="letterToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select title letters" aria-expanded="false">
-                                <span id="letterToggleLabel" class="truncate">All</span>
-                                <span class="text-xs opacity-70">▼</span>
-                            </button>
+                            <div class="flex items-center gap-1">
+                                <button id="letterToggle" type="button" class="inline-flex h-[42px] flex-1 items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select title letters" aria-expanded="false">
+                                    <span id="letterToggleLabel" class="truncate">All</span>
+                                    <span class="text-xs opacity-70">▼</span>
+                                </button>
+                                <button type="button" class="filter-close-btn flex-shrink-0 flex items-center justify-center h-5 w-5 rounded hover:bg-[hsl(0_72%_45%/0.1)] dark:hover:bg-[hsl(0_72%_58%/0.15)] text-[hsl(0_72%_45%)] dark:text-[hsl(0_72%_58%)] transition-colors" data-control="letterControl" aria-label="Hide this filter" title="Hide">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                                </button>
+                            </div>
                             <div id="letterPanel" class="hidden absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
                                 <div class="mb-2 flex items-center justify-end">
                                     <button id="letterClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
@@ -189,12 +206,17 @@
                             </div>
                         </div>
 
-                        <div id="typeControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-32 xl:w-40">
+                        <div id="typeControl" class="relative hidden w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-32 xl:w-40">
                             <label for="typeToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Type</label>
-                            <button id="typeToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select types" aria-expanded="false">
-                                <span id="typeToggleLabel" class="truncate">All</span>
-                                <span class="text-xs opacity-70">▼</span>
-                            </button>
+                            <div class="flex items-center gap-1">
+                                <button id="typeToggle" type="button" class="inline-flex h-[42px] flex-1 items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select types" aria-expanded="false">
+                                    <span id="typeToggleLabel" class="truncate">All</span>
+                                    <span class="text-xs opacity-70">▼</span>
+                                </button>
+                                <button type="button" class="filter-close-btn flex-shrink-0 flex items-center justify-center h-5 w-5 rounded hover:bg-[hsl(0_72%_45%/0.1)] dark:hover:bg-[hsl(0_72%_58%/0.15)] text-[hsl(0_72%_45%)] dark:text-[hsl(0_72%_58%)] transition-colors" data-control="typeControl" aria-label="Hide this filter" title="Hide">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                                </button>
+                            </div>
                             <div id="typePanel" class="hidden absolute left-0 top-[calc(100%+0.4rem)] z-30 w-56 max-w-[80vw] rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
                                 <div class="mb-2 flex items-center justify-end">
                                     <button id="typeClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
@@ -203,12 +225,17 @@
                             </div>
                         </div>
 
-                        <div id="genreControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-40 xl:w-48">
+                        <div id="genreControl" class="relative hidden w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-40 xl:w-48">
                             <label for="genreToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Genre</label>
-                            <button id="genreToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select genres" aria-expanded="false">
-                                <span id="genreToggleLabel" class="truncate">All</span>
-                                <span class="text-xs opacity-70">▼</span>
-                            </button>
+                            <div class="flex items-center gap-1">
+                                <button id="genreToggle" type="button" class="inline-flex h-[42px] flex-1 items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select genres" aria-expanded="false">
+                                    <span id="genreToggleLabel" class="truncate">All</span>
+                                    <span class="text-xs opacity-70">▼</span>
+                                </button>
+                                <button type="button" class="filter-close-btn flex-shrink-0 flex items-center justify-center h-5 w-5 rounded hover:bg-[hsl(0_72%_45%/0.1)] dark:hover:bg-[hsl(0_72%_58%/0.15)] text-[hsl(0_72%_45%)] dark:text-[hsl(0_72%_58%)] transition-colors" data-control="genreControl" aria-label="Hide this filter" title="Hide">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                                </button>
+                            </div>
                             <div id="genrePanel" class="hidden absolute left-0 top-[calc(100%+0.4rem)] z-30 w-56 max-w-[80vw] rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
                                 <div class="mb-2 flex items-center justify-end">
                                     <button id="genreClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
@@ -217,12 +244,17 @@
                             </div>
                         </div>
 
-                        <div id="yearControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-32 xl:w-40">
+                        <div id="yearControl" class="relative hidden w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-32 xl:w-40">
                             <label for="yearToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Year</label>
-                            <button id="yearToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select years" aria-expanded="false">
-                                <span id="yearToggleLabel" class="truncate">All</span>
-                                <span class="text-xs opacity-70">▼</span>
-                            </button>
+                            <div class="flex items-center gap-1">
+                                <button id="yearToggle" type="button" class="inline-flex h-[42px] flex-1 items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select years" aria-expanded="false">
+                                    <span id="yearToggleLabel" class="truncate">All</span>
+                                    <span class="text-xs opacity-70">▼</span>
+                                </button>
+                                <button type="button" class="filter-close-btn flex-shrink-0 flex items-center justify-center h-5 w-5 rounded hover:bg-[hsl(0_72%_45%/0.1)] dark:hover:bg-[hsl(0_72%_58%/0.15)] text-[hsl(0_72%_45%)] dark:text-[hsl(0_72%_58%)] transition-colors" data-control="yearControl" aria-label="Hide this filter" title="Hide">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                                </button>
+                            </div>
                             <div id="yearPanel" class="hidden absolute left-0 top-[calc(100%+0.4rem)] z-30 w-56 max-w-[80vw] rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
                                 <div class="mb-2 flex items-center justify-end">
                                     <button id="yearClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
@@ -231,12 +263,17 @@
                             </div>
                         </div>
 
-                        <div id="runtimeControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-32 xl:w-40">
+                        <div id="runtimeControl" class="relative hidden w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-32 xl:w-40">
                             <label for="runtimeToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Runtime</label>
-                            <button id="runtimeToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select runtime ranges" aria-expanded="false">
-                                <span id="runtimeToggleLabel" class="truncate">All</span>
-                                <span class="text-xs opacity-70">▼</span>
-                            </button>
+                            <div class="flex items-center gap-1">
+                                <button id="runtimeToggle" type="button" class="inline-flex h-[42px] flex-1 items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select runtime ranges" aria-expanded="false">
+                                    <span id="runtimeToggleLabel" class="truncate">All</span>
+                                    <span class="text-xs opacity-70">▼</span>
+                                </button>
+                                <button type="button" class="filter-close-btn flex-shrink-0 flex items-center justify-center h-5 w-5 rounded hover:bg-[hsl(0_72%_45%/0.1)] dark:hover:bg-[hsl(0_72%_58%/0.15)] text-[hsl(0_72%_45%)] dark:text-[hsl(0_72%_58%)] transition-colors" data-control="runtimeControl" aria-label="Hide this filter" title="Hide">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                                </button>
+                            </div>
                             <div id="runtimePanel" class="hidden absolute left-0 top-[calc(100%+0.4rem)] z-30 w-56 max-w-[80vw] rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
                                 <div class="mb-2 flex items-center justify-end">
                                     <button id="runtimeClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
@@ -245,18 +282,28 @@
                             </div>
                         </div>
 
-                        <div id="tagControl" class="relative flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-36 xl:w-44">
+                        <div id="tagControl" class="relative hidden w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-36 xl:w-44">
                             <label for="tagToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Tags</label>
-                            <button id="tagToggle" type="button" class="inline-flex h-[42px] w-full items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select tags" aria-expanded="false">
-                                <span id="tagToggleLabel" class="truncate">All</span>
-                                <span class="text-xs opacity-70">▼</span>
-                            </button>
+                            <div class="flex items-center gap-1">
+                                <button id="tagToggle" type="button" class="inline-flex h-[42px] flex-1 items-center justify-between rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 hover:bg-[hsl(36_33%_94%)] focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" aria-label="Select tags" aria-expanded="false">
+                                    <span id="tagToggleLabel" class="truncate">All</span>
+                                    <span class="text-xs opacity-70">▼</span>
+                                </button>
+                                <button type="button" class="filter-close-btn flex-shrink-0 flex items-center justify-center h-5 w-5 rounded hover:bg-[hsl(0_72%_45%/0.1)] dark:hover:bg-[hsl(0_72%_58%/0.15)] text-[hsl(0_72%_45%)] dark:text-[hsl(0_72%_58%)] transition-colors" data-control="tagControl" aria-label="Hide this filter" title="Hide">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                                </button>
+                            </div>
                             <div id="tagPanel" class="hidden absolute left-0 top-[calc(100%+0.4rem)] z-30 w-56 max-w-[80vw] rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(40_100%_99%/0.98)] p-2 shadow-[0_14px_24px_hsl(32_58%_13%/0.16)] backdrop-blur-md dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_18%/0.98)] dark:shadow-[0_14px_24px_hsl(220_45%_5%/0.56)]">
                                 <div class="mb-2 flex items-center justify-end">
                                     <button id="tagClear" type="button" class="rounded-md px-2 py-1 text-xs text-[hsl(28_22%_30%)] hover:bg-[hsl(35_41%_92%)] dark:text-[hsl(38_21%_78%)] dark:hover:bg-[hsl(220_14%_24%)]">Clear</button>
                                 </div>
                                 <div id="tagOptions" class="max-h-56 space-y-1 overflow-y-auto pr-1"></div>
                             </div>
+                        </div>
+
+                        <div id="searchControl" class="flex w-full flex-col gap-1.5 lg:w-[16rem]">
+                            <label for="searchInput" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Search title, actor, director</label>
+                            <input id="searchInput" type="search" placeholder="hemsworth, ambulance, nicolai" class="w-full rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-3 py-2.5 text-sm text-[hsl(30_13%_10%)] outline-none ring-0 focus:border-[hsl(174_77%_26%)] focus:ring-2 focus:ring-[hsl(174_77%_26%/0.33)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:placeholder:text-[hsl(38_12%_63%)] dark:focus:border-[hsl(168_78%_42%)] dark:focus:ring-[hsl(168_78%_42%/0.33)]" />
                         </div>
 
                         <div id="sortControl" class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] lg:w-28 xl:w-32">
@@ -353,6 +400,8 @@
         }
 
         const refs = {
+            filtersMenuToggle: document.getElementById("filtersMenuToggle"),
+            filtersMenu: document.getElementById("filtersMenu"),
             letterToggle: document.getElementById("letterToggle"),
             letterToggleLabel: document.getElementById("letterToggleLabel"),
             letterPanel: document.getElementById("letterPanel"),
@@ -2107,6 +2156,115 @@
             applyFilters();
         }
 
+        function wireFiltersMenu() {
+            const menuToggle = refs.filtersMenuToggle;
+            const menu = refs.filtersMenu;
+            const filterControls = {
+                letter: document.getElementById("letterControl"),
+                type: document.getElementById("typeControl"),
+                genre: document.getElementById("genreControl"),
+                year: document.getElementById("yearControl"),
+                runtime: document.getElementById("runtimeControl"),
+                tag: document.getElementById("tagControl"),
+            };
+
+            // Helper function to update close button and menu item visibility
+            function updateFilterVisibility() {
+                document.querySelectorAll(".filter-close-btn").forEach((btn) => {
+                    const controlId = btn.dataset.control;
+                    const control = document.getElementById(controlId);
+                    if (control && !control.classList.contains("hidden")) {
+                        btn.classList.remove("hidden");
+                    } else {
+                        btn.classList.add("hidden");
+                    }
+                });
+
+                // Hide menu items for visible filters
+                let hasVisibleItems = false;
+                document.querySelectorAll(".filter-menu-item").forEach((item) => {
+                    const filterType = item.dataset.filter;
+                    const control = filterControls[filterType];
+                    if (control && !control.classList.contains("hidden")) {
+                        item.classList.add("hidden");
+                    } else {
+                        item.classList.remove("hidden");
+                        hasVisibleItems = true;
+                    }
+                });
+
+                // Hide the menu and toggle button if there are no visible items (all filters are shown)
+                if (!hasVisibleItems) {
+                    menu.classList.add("hidden");
+                    menuToggle.setAttribute("aria-expanded", "false");
+                    menuToggle.parentElement.classList.add("hidden");
+                } else {
+                    menuToggle.parentElement.classList.remove("hidden");
+                }
+            }
+
+            // Close menu when clicking outside
+            document.addEventListener("click", (e) => {
+                if (!e.target.closest("#filtersMenuControl")) {
+                    menu.classList.add("hidden");
+                    menuToggle.setAttribute("aria-expanded", "false");
+                }
+            });
+
+            // Toggle menu on button click
+            menuToggle.addEventListener("click", () => {
+                const isOpen = !menu.classList.contains("hidden");
+                if (isOpen) {
+                    menu.classList.add("hidden");
+                    menuToggle.setAttribute("aria-expanded", "false");
+                } else {
+                    // Check if there are any visible items before opening
+                    let hasVisibleItems = false;
+                    document.querySelectorAll(".filter-menu-item").forEach((item) => {
+                        if (!item.classList.contains("hidden")) {
+                            hasVisibleItems = true;
+                        }
+                    });
+                    
+                    if (hasVisibleItems) {
+                        menu.classList.remove("hidden");
+                        menuToggle.setAttribute("aria-expanded", "true");
+                    }
+                }
+            });
+
+            // Handle filter menu item clicks (toggle visibility)
+            document.querySelectorAll(".filter-menu-item").forEach((item) => {
+                item.addEventListener("click", () => {
+                    const filterType = item.dataset.filter;
+                    
+                    // Toggle the selected filter
+                    if (filterControls[filterType]) {
+                        filterControls[filterType].classList.toggle("hidden");
+                    }
+                    
+                    // Update filter and menu visibility
+                    updateFilterVisibility();
+                });
+            });
+
+            // Handle close button clicks
+            document.querySelectorAll(".filter-close-btn").forEach((btn) => {
+                btn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const controlId = btn.dataset.control;
+                    const control = document.getElementById(controlId);
+                    if (control) {
+                        control.classList.add("hidden");
+                        updateFilterVisibility();
+                    }
+                });
+            });
+
+            // Initialize filter visibility
+            updateFilterVisibility();
+        }
+
         function wireEvents() {
             let searchDebounceTimeout;
             refs.searchInput.addEventListener("input", () => {
@@ -2131,6 +2289,7 @@
             wireControlsToggle();
             wireGridWidthToggle();
             wireCardViewToggle();
+            wireFiltersMenu();
             wireMultiSelectControls();
             wireLetterMultiSelectControl();
             wireTagEditors();
