@@ -97,6 +97,12 @@
             max-width: none;
         }
 
+        #grid.list-view .movie-directors {
+            flex: 0 1 auto;
+            min-width: 0;
+            margin: 0;
+        }
+
         #grid.list-view .movie-genres {
             flex: 0 1 auto;
             margin: 0;
@@ -148,6 +154,7 @@
             #grid.list-view .movie-title,
             #grid.list-view .movie-meta,
             #grid.list-view .movie-stars,
+            #grid.list-view .movie-directors,
             #grid.list-view .movie-genres,
             #grid.list-view .movie-plot,
             #grid.list-view .movie-tags {
@@ -1703,6 +1710,13 @@
                 .slice(0, 3)
                 .map((a) => `<span class="shrink-0 rounded-full border border-[hsl(188_33%_74%)] bg-[hsl(189_54%_92%)] px-2.5 py-1 text-xs text-[hsl(191_37%_27%)] dark:border-[hsl(191_25%_34%)] dark:bg-[hsl(192_34%_24%)] dark:text-[hsl(187_39%_82%)]">${escapeHtml(a)}</span>`)
                 .join("") || '<span class="text-[0.9rem] text-[hsl(28_10%_39%)] dark:text-[hsl(38_14%_70%)]">Actors unavailable</span>';
+            const directorNames = String(movie.Director || "")
+                .split(",")
+                .map((director) => director.trim())
+                .filter((director) => director && director.toLowerCase() !== "n/a");
+            const directorPills = directorNames
+                .map((director) => `<span class="shrink-0 rounded-full border border-[hsl(278_22%_74%)] bg-[hsl(278_34%_93%)] px-2.5 py-1 text-xs text-[hsl(278_30%_27%)] dark:border-[hsl(278_18%_35%)] dark:bg-[hsl(278_24%_24%)] dark:text-[hsl(278_30%_82%)]">${escapeHtml(director)}</span>`)
+                .join("") || '<span class="text-[0.9rem] text-[hsl(28_10%_39%)] dark:text-[hsl(38_14%_70%)]">Director unavailable</span>';
             const movieTags = sanitizeTagList(movie.Tags);
             const movieKey = escapeHtml(movie._movieKey || "");
             const tagPills = movieTags
@@ -1736,6 +1750,10 @@
                             <div class="movie-stars flex items-center gap-2" title="${escapeHtml(movie.Actors || "Actors unavailable")}">
                                 <span class="shrink-0 text-[0.9rem] text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">Stars:</span>
                                 <div class="no-scrollbar flex min-w-0 flex-1 flex-nowrap items-center gap-2 overflow-x-auto whitespace-nowrap" style="-ms-overflow-style:none;scrollbar-width:none;">${actorPills}</div>
+                            </div>
+                            <div class="movie-directors flex flex-wrap items-center gap-2" title="${escapeHtml(movie.Director || "Director unavailable")}">
+                                <span class="shrink-0 text-[0.9rem] text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">${directorNames.length > 1 ? "Directors:" : "Director:"}</span>
+                                ${directorPills}
                             </div>
                             <div class="movie-genres flex flex-wrap gap-2 my-1">${genres}</div>
                         </div>
