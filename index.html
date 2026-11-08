@@ -164,9 +164,9 @@
     </style>
 </head>
 <body class="min-h-screen bg-[hsl(37_39%_87%)] text-[hsl(30_13%_10%)] pb-[calc(4rem_+_5vh)] dark:bg-[hsl(220_18%_12%)] dark:text-[hsl(43_33%_92%)]">
-    <main class="min-h-screen w-full">
-        <div class="min-h-screen">
-            <aside id="filtersAside" class="sticky top-8 z-20 mx-4 mt-4 mb-0 rounded-xl border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%/0.72)] px-3 pb-3 pt-3 shadow-[0_4px_10px_hsl(32_58%_13%/0.12)] backdrop-blur-md transition-[transform,opacity,box-shadow] duration-500 ease-in-out dark:border-[hsl(220_16%_27%)] dark:bg-[hsl(222_20%_16%/0.85)] dark:shadow-[0_4px_14px_hsl(220_45%_5%/0.45)] md:mx-8 md:mt-8 md:mb-0 md:px-5 md:pb-5 md:pt-4" aria-label="Filters">
+    <main class="w-full">
+        <div id="filtersContainer" class="sticky top-0 z-20 flex flex-col gap-4 md:gap-4 lg:flex-row lg:gap-4 p-6 sm:p-7 md:p-8 transition-[transform,opacity] duration-500 ease-in-out">
+            <aside id="filtersAside" class="rounded-xl border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%/0.72)] px-3 pb-3 pt-3 backdrop-blur-md dark:border-[hsl(220_16%_27%)] dark:bg-[hsl(222_20%_16%/0.85)] md:px-5 md:pb-5 md:pt-4 flex-1 transition-shadow duration-500" aria-label="Filters">
                 <section class="flex w-full flex-col gap-6">
                     <div id="filtersControlsGroup" class="flex w-full min-w-0 flex-wrap items-end justify-center gap-3 lg:min-w-0 lg:flex-nowrap">
 
@@ -323,59 +323,58 @@
                         </div>
 
                         <!-- Insert: Ignore leading articles checkbox -->
-                        <div id="articlesControl" class="flex flex-col gap-1.5 w-[100px]">
-                            <label for="ignoreArticlesCheckbox" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)] cursor-pointer w-fit" title="If checked, the 'a', 'an', and 'the' articles gets ignored when filtering by initial letter and sorting by title.">Ignore articles?</label>
-                            <div class="flex h-11 items-center -mt-1">
-                                <label for="ignoreArticlesCheckbox" class="inline-flex cursor-pointer items-center">
-                                    <input type="checkbox" id="ignoreArticlesCheckbox" class="peer sr-only" />
-                                    <span class="inline-flex h-4 w-4 items-center justify-center rounded-[4px] border border-[hsl(34_33%_70%)] bg-[hsl(0_0%_100%)] text-transparent text-[11px] font-semibold leading-none peer-checked:border-[hsl(174_77%_26%)] peer-checked:bg-[hsl(174_77%_26%)] peer-checked:text-[hsl(0_0%_100%)] peer-focus-visible:ring-2 peer-focus-visible:ring-[hsl(174_77%_26%/0.35)] peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_42%)] dark:bg-[hsl(220_16%_22%)] dark:peer-checked:border-[hsl(168_78%_42%)] dark:peer-checked:bg-[hsl(168_78%_42%)] dark:peer-checked:text-[hsl(220_30%_10%)] dark:peer-focus-visible:ring-[hsl(168_78%_42%/0.4)] dark:peer-focus-visible:ring-offset-[hsl(220_18%_12%)]">✓</span>
-                                </label>
+                        <div id="articlesCountGroup" class="flex w-full items-end gap-3 lg:w-fit">
+                            <div id="articlesControl" class="flex w-[100px] flex-none flex-col gap-1.5">
+                                <label for="ignoreArticlesCheckbox" class="w-fit cursor-pointer text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]" title="If checked, the 'a', 'an', and 'the' articles gets ignored when filtering by initial letter and sorting by title.">Ignore articles?</label>
+                                <div class="flex h-[42px] items-center">
+                                    <label for="ignoreArticlesCheckbox" class="inline-flex cursor-pointer items-center">
+                                        <input type="checkbox" id="ignoreArticlesCheckbox" class="peer sr-only" />
+                                        <span class="inline-flex h-4 w-4 items-center justify-center rounded-[4px] border border-[hsl(34_33%_70%)] bg-[hsl(0_0%_100%)] text-transparent text-[11px] font-semibold leading-none peer-checked:border-[hsl(174_77%_26%)] peer-checked:bg-[hsl(174_77%_26%)] peer-checked:text-[hsl(0_0%_100%)] peer-focus-visible:ring-2 peer-focus-visible:ring-[hsl(174_77%_26%/0.35)] peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_42%)] dark:bg-[hsl(220_16%_22%)] dark:peer-checked:border-[hsl(168_78%_42%)] dark:peer-checked:bg-[hsl(168_78%_42%)] dark:peer-checked:text-[hsl(220_30%_10%)] dark:peer-focus-visible:ring-[hsl(168_78%_42%/0.4)] dark:peer-focus-visible:ring-offset-[hsl(220_18%_12%)]">✓</span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
-                        <div id="countControl" class="flex w-[90px] items-end mb-2 opacity-50">
-                            <span id="resultsCount">0 Titles</span>
-                        </div>
-
-                        <div id="controlsToggleControl" class="flex w-[46px] items-end ml-4">
-                            <button id="controlsToggle" type="button" class="inline-flex h-[42px] w-[46px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Show control buttons" aria-pressed="false" title="Show controls">
-                                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M10.3 2.9h3.4l.6 2.1c.4.1.9.3 1.3.5l1.9-1.1 2.4 2.4-1.1 1.9c.2.4.4.9.5 1.3l2.1.6v3.4l-2.1.6c-.1.4-.3.9-.5 1.3l1.1 1.9-2.4 2.4-1.9-1.1c-.4.2-.9.4-1.3.5l-.6 2.1h-3.4l-.6-2.1c-.4-.1-.9-.3-1.3-.5l-1.9 1.1-2.4-2.4 1.1-1.9c-.2-.4-.4-.9-.5-1.3l-2.1-.6v-3.4l2.1-.6c.1-.4.3-.9.5-1.3l-1.1-1.9 2.4-2.4 1.9 1.1c.4-.2.9-.4 1.3-.5z"/>
-                                    <circle cx="12" cy="12" r="3.1"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="controlsRow" class="hidden w-full flex-wrap items-end justify-center gap-3">
-                    
-                        <div id="infoToggleControl" class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-auto lg:ml-4">
-                            <label for="infoToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Info</label>
-                            <button id="infoToggle" type="button" class="inline-flex h-[42px] w-[46px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Show/hide all info" aria-pressed="false">Off</button>
-                        </div>
-                        
-                        <div class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-auto">
-                            <label for="themeToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Mode</label>
-                            <button id="themeToggle" type="button" class="inline-flex h-[42px] w-[62px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Switch color theme" aria-pressed="false">Dark</button>
-                        </div>
-
-                        <div class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-auto">
-                            <label for="widthToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Width</label>
-                            <button id="widthToggle" type="button" class="inline-flex h-[42px] w-[62px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Switch grid width" aria-pressed="false">Boxed</button>
-                        </div>
-
-                        <div class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-auto">
-                            <label for="cardViewToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">View</label>
-                            <button id="cardViewToggle" type="button" class="inline-flex h-[42px] w-[62px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Switch card view" aria-pressed="false">Grid</button>
-                        </div>
-
-                        <div class="flex w-full flex-col gap-1.5 sm:w-[calc(50%-0.375rem)] xl:w-auto">
-                            <label for="exportJsonButton" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Data</label>
-                            <button id="exportJsonButton" type="button" class="inline-flex h-[42px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Download edited movies JSON">Download</button>
+                            <div id="countControl" class="flex w-[90px] items-end mb-2 opacity-50">
+                                <span id="resultsCount">0 Titles</span>
+                            </div>
                         </div>
                     </div>
                 </section>
             </aside>
+
+            <!-- Controls Card Section -->
+            <aside id="controlsAside" class="rounded-xl border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%/0.72)] px-3 pb-3 pt-3 backdrop-blur-md dark:border-[hsl(220_16%_27%)] dark:bg-[hsl(222_20%_16%/0.85)] md:px-5 md:pb-5 md:pt-4 w-full sm:w-fit transition-shadow duration-500" aria-label="Controls">
+                <section class="flex w-full flex-col gap-0">
+                    <div id="controlsRow" class="w-full flex flex-row flex-wrap gap-1.5">
+                    
+                        <div id="infoToggleControl" class="flex flex-col gap-1.5 w-fit sm:w-auto">
+                            <label for="infoToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Info</label>
+                            <button id="infoToggle" type="button" class="inline-flex h-[42px] w-[46px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Show/hide all info" aria-pressed="false">Off</button>
+                        </div>
+                        
+                        <div class="flex flex-col gap-1.5 w-fit sm:w-auto">
+                            <label for="themeToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Mode</label>
+                            <button id="themeToggle" type="button" class="inline-flex h-[42px] w-[62px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Switch color theme" aria-pressed="false">Dark</button>
+                        </div>
+
+                        <div class="flex flex-col gap-1.5 w-fit sm:w-auto">
+                            <label for="widthToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Width</label>
+                            <button id="widthToggle" type="button" class="inline-flex h-[42px] w-[62px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Switch grid width" aria-pressed="false">Boxed</button>
+                        </div>
+
+                        <div class="flex flex-col gap-1.5 w-fit sm:w-auto">
+                            <label for="cardViewToggle" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">View</label>
+                            <button id="cardViewToggle" type="button" class="inline-flex h-[42px] w-[62px] items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Switch card view" aria-pressed="false">Grid</button>
+                        </div>
+
+                        <div class="flex flex-col gap-1.5 w-fit sm:w-auto">
+                            <label for="exportJsonButton" class="text-sm text-[hsl(28_10%_39%)] dark:text-[hsl(38_18%_72%)]">Data</label>
+                            <button id="exportJsonButton" type="button" class="inline-flex h-[42px] w-fit items-center justify-center rounded-lg border border-[hsl(34_33%_84%)] bg-[hsl(0_0%_100%)] px-2 text-sm text-[hsl(30_13%_10%)] hover:bg-[hsl(36_33%_94%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(174_77%_26%/0.33)] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(0_0%_100%)] dark:border-[hsl(220_16%_31%)] dark:bg-[hsl(220_16%_20%)] dark:text-[hsl(45_35%_93%)] dark:hover:bg-[hsl(220_14%_26%)] dark:focus-visible:ring-[hsl(168_78%_42%/0.35)] dark:focus-visible:ring-offset-[hsl(222_20%_16%)]" aria-label="Download edited movies JSON">Download</button>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </div>
 
             <section>
                 <section id="grid" class="grid grid-cols-2 gap-6 p-6 sm:gap-7 sm:p-7 md:gap-8 md:p-8 md:grid-cols-[repeat(auto-fill,minmax(max(300px,calc((100%_-_14rem)/8)),1fr))]" aria-label="Movie cards"></section>
@@ -441,7 +440,6 @@
             widthToggle: document.getElementById("widthToggle"),
             cardViewToggle: document.getElementById("cardViewToggle"),
             exportJsonButton: document.getElementById("exportJsonButton"),
-            controlsToggle: document.getElementById("controlsToggle"),
             controlsRow: document.getElementById("controlsRow"),
             filtersControlsGroup: document.getElementById("filtersControlsGroup"),
             searchControl: document.getElementById("searchControl"),
@@ -451,7 +449,9 @@
             sortControl: document.getElementById("sortControl"),
             countControl: document.getElementById("countControl"),
             resultsCount: document.getElementById("resultsCount"),
+            filtersContainer: document.getElementById("filtersContainer"),
             filtersAside: document.getElementById("filtersAside"),
+            controlsAside: document.getElementById("controlsAside"),
             grid: document.getElementById("grid"),
             emptyState: document.getElementById("emptyState"),
         };
@@ -710,40 +710,6 @@
             });
         }
 
-        function getPreferredControlsVisibility() {
-            const saved = localStorage.getItem("filters-controls-visible");
-            if (saved === "true") {
-                return true;
-            }
-            if (saved === "false") {
-                return false;
-            }
-            return false;
-        }
-
-        function applyControlsVisibility(isVisible) {
-            controlsState.visible = isVisible;
-            refs.controlsRow.classList.toggle("hidden", !isVisible);
-            refs.controlsRow.classList.toggle("flex", isVisible);
-            refs.controlsToggle.setAttribute("aria-pressed", String(isVisible));
-            refs.controlsToggle.setAttribute("aria-label", isVisible ? "Hide control buttons" : "Show control buttons");
-            refs.controlsToggle.title = isVisible ? "Hide controls" : "Show controls";
-
-            // Expanding/collapsing the controls row can nudge scroll position; don't treat that as user scroll.
-            layoutState.suppressScrollHideUntil = performance.now() + 300;
-            layoutState.lastScrollY = window.scrollY;
-            layoutState.lastStateY = window.scrollY;
-        }
-
-        function wireControlsToggle() {
-            applyControlsVisibility(getPreferredControlsVisibility());
-            refs.controlsToggle.addEventListener("click", () => {
-                const next = !controlsState.visible;
-                localStorage.setItem("filters-controls-visible", String(next));
-                applyControlsVisibility(next);
-            });
-        }
-
         function getEffectiveGridWidthMode() {
             return window.innerWidth >= WIDTH_TOGGLE_MIN_VIEWPORT ? widthState.mode : "full";
         }
@@ -767,8 +733,6 @@
             refs.runtimeControl.style.width = isColumn ? "100%" : "8rem";
             refs.tagControl.style.width = isColumn ? "100%" : "9rem";
             refs.sortControl.style.width = isColumn ? "100%" : "7rem";
-            refs.countControl.style.width = isColumn ? "100%" : "90px";
-            refs.countControl.style.marginBottom = isColumn ? "0" : "0.5rem";
         }
 
         function closeFilterPanels() {
@@ -1103,19 +1067,27 @@
         }
 
         function updateFiltersShadow() {
-            const isAtTop = window.scrollY <= 8;
             const isDark = document.documentElement.classList.contains("dark");
+            const filtersAside = document.getElementById("filtersAside");
+            const controlsAside = document.getElementById("controlsAside");
+
+            if (!filtersAside) return;
+
+            const isAtTop = window.scrollY <= 8;
+            let shadow;
 
             if (isDark) {
-                refs.filtersAside.style.boxShadow = isAtTop
-                    ? "0 1px 4px hsl(220 45% 5% / 0.18)"
+                shadow = isAtTop
+                    ? "0 2px 4px hsl(220 45% 5% / 0.1)"
                     : "0 10px 26px hsl(220 45% 5% / 0.58)";
-                return;
+            } else {
+                shadow = isAtTop
+                    ? "0 2px 4px hsl(32 58% 13% / 0.05)"
+                    : "0 10px 24px hsl(32 58% 13% / 0.2)";
             }
 
-            refs.filtersAside.style.boxShadow = isAtTop
-                ? "0 1px 4px hsl(32 58% 13% / 0.08)"
-                : "0 10px 24px hsl(32 58% 13% / 0.2)";
+            filtersAside.style.boxShadow = shadow;
+            if (controlsAside) controlsAside.style.boxShadow = shadow;
         }
 
         function updateFiltersScrollVisibility() {
@@ -1124,25 +1096,29 @@
                 return;
             }
 
+            const container = refs.filtersContainer;
+            if (!container) return;
+
             const currentScrollY = window.scrollY;
             if (typeof layoutState.lastScrollY !== "number") layoutState.lastScrollY = currentScrollY;
             if (typeof layoutState.lastState !== "string") layoutState.lastState = "shown";
 
-            // Show on scroll up, hide on scroll down
-            if (currentScrollY < 32 || currentScrollY < layoutState.lastScrollY) {
+            // Show on scroll up, hide on scroll down (threshold based on container height)
+            const threshold = container.offsetHeight + 16;
+            if (currentScrollY < threshold || currentScrollY < layoutState.lastScrollY) {
                 // Show
                 if (layoutState.lastState !== "shown") {
-                    refs.filtersAside.style.transform = "translateY(0)";
-                    refs.filtersAside.style.opacity = "1";
-                    refs.filtersAside.style.pointerEvents = "auto";
+                    container.style.transform = "translateY(0)";
+                    container.style.opacity = "1";
+                    container.style.pointerEvents = "auto";
                     layoutState.lastState = "shown";
                 }
             } else if (currentScrollY > layoutState.lastScrollY + 10) {
                 // Hide
                 if (layoutState.lastState !== "hidden") {
-                    refs.filtersAside.style.transform = "translateY(-110%)";
-                    refs.filtersAside.style.opacity = "0";
-                    refs.filtersAside.style.pointerEvents = "none";
+                    container.style.transform = "translateY(-110%)";
+                    container.style.opacity = "0";
+                    container.style.pointerEvents = "none";
                     layoutState.lastState = "hidden";
                 }
             }
@@ -1152,16 +1128,13 @@
         function applyGridWidth(mode) {
             widthState.mode = mode;
             const effectiveMode = getEffectiveGridWidthMode();
-            const fullModeInlineMargin = window.innerWidth < 640 ? "1rem" : "2rem";
             const gridStyles = window.getComputedStyle(refs.grid);
             const gridPadX = Number.parseFloat(gridStyles.paddingLeft || "0") + Number.parseFloat(gridStyles.paddingRight || "0");
 
             refs.grid.style.maxWidth = effectiveMode === "boxed" ? "75vw" : "none";
             refs.grid.style.marginInline = "auto";
-            refs.filtersAside.style.maxWidth = effectiveMode === "boxed" ? `calc(75vw - ${gridPadX}px)` : "none";
-            refs.filtersAside.style.marginInline = effectiveMode === "boxed" ? "auto" : fullModeInlineMargin;
-            refs.filtersAside.style.position = "sticky";
-            refs.filtersAside.style.top = "2rem";
+            refs.filtersContainer.style.maxWidth = effectiveMode === "boxed" ? `calc(75vw - ${gridPadX}px)` : "none";
+            refs.filtersContainer.style.marginInline = effectiveMode === "boxed" ? "auto" : "0";
             updateFiltersControlsLayout();
             updateFiltersScrollVisibility(true);
 
@@ -1189,13 +1162,14 @@
             layoutState.filtersResizeObserver = new ResizeObserver(() => {
                 updateFiltersControlsLayout();
             });
-            layoutState.filtersResizeObserver.observe(refs.filtersAside);
+            layoutState.filtersResizeObserver.observe(refs.filtersContainer);
 
             window.addEventListener("resize", () => {
                 applyGridWidth(widthState.mode);
             });
 
             window.addEventListener("scroll", () => {
+                updateFiltersShadow();
                 updateFiltersScrollVisibility();
             });
 
@@ -2286,7 +2260,6 @@
 
         async function init() {
             wireTheme();
-            wireControlsToggle();
             wireGridWidthToggle();
             wireCardViewToggle();
             wireFiltersMenu();
@@ -2295,6 +2268,7 @@
             wireTagEditors();
             wireCreditsMarquee();
             wireEvents();
+            updateFiltersShadow();
             window.addTags = addTags;
             window.removeTags = removeTags;
             try {
