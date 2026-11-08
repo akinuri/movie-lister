@@ -343,6 +343,7 @@
             filtered: [],
             allInfoVisible: getInitialInfoVisible(),
         };
+        let stopCreditsMarquees = () => {};
 
         function getInitialInfoVisible() {
             const saved = localStorage.getItem("info-visible");
@@ -1747,13 +1748,13 @@
                                 <span aria-hidden="true">&middot;</span>
                                 <span class="${ratingTone}"><span style="font-size:1.1em;line-height:1;display:inline-block;">★</span> ${ratingWithVotes}</span>
                             </div>
-                            <div class="movie-stars flex items-center gap-2" title="${escapeHtml(movie.Actors || "Actors unavailable")}">
+                            <div class="movie-stars flex items-center gap-2">
                                 <span class="shrink-0 text-[0.9rem] text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">Stars:</span>
                                 <div class="no-scrollbar flex min-w-0 flex-1 flex-nowrap items-center gap-2 overflow-x-auto whitespace-nowrap" style="-ms-overflow-style:none;scrollbar-width:none;">${actorPills}</div>
                             </div>
-                            <div class="movie-directors flex flex-wrap items-center gap-2" title="${escapeHtml(movie.Director || "Director unavailable")}">
+                            <div class="movie-directors flex min-w-0 items-center gap-2">
                                 <span class="shrink-0 text-[0.9rem] text-[hsl(29_13%_31%)] dark:text-[hsl(38_14%_74%)]">${directorNames.length > 1 ? "Directors:" : "Director:"}</span>
-                                ${directorPills}
+                                <div class="no-scrollbar flex min-w-0 flex-1 flex-nowrap items-center gap-2 overflow-x-auto whitespace-nowrap" style="-ms-overflow-style:none;scrollbar-width:none;">${directorPills}</div>
                             </div>
                             <div class="movie-genres flex flex-wrap gap-2 my-1">${genres}</div>
                         </div>
@@ -1772,6 +1773,7 @@
         }
 
         function render() {
+            stopCreditsMarquees();
             updateResultsCount();
 
             if (!state.filtered.length) {
@@ -1939,6 +1941,98 @@
             });
         }
 
+        function wireCreditsMarquee() {
+            const activeMarquees = new Map();
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+            function stopMarquee(container) {
+                const marquee = activeMarquees.get(container);
+                if (!marquee) {
+                    return;
+                }
+
+                cancelAnimationFrame(marquee.frameId);
+                activeMarquees.delete(container);
+            }
+
+            stopCreditsMarquees = () => {
+                for (const container of activeMarquees.keys()) {
+                    stopMarquee(container);
+                }
+            };
+
+            function startMarquee(container) {
+                const scroller = container.querySelector(".no-scrollbar");
+                if (!scroller || scroller.scrollWidth <= scroller.clientWidth + 1 || reducedMotion.matches) {
+                    return;
+                }
+
+                const marquee = {
+                    frameId: 0,
+                    lastTime: 0,
+                    position: scroller.scrollLeft,
+                    lastScrollLeft: scroller.scrollLeft,
+                    direction: scroller.scrollLeft >= scroller.scrollWidth - scroller.clientWidth ? -1 : 1,
+                };
+                activeMarquees.set(container, marquee);
+
+                function animate(time) {
+                    if (reducedMotion.matches) {
+                        stopMarquee(container);
+                        return;
+                    }
+
+                    if (marquee.lastTime) {
+                        if (scroller.scrollLeft !== marquee.lastScrollLeft) {
+                            marquee.position = scroller.scrollLeft;
+                        }
+
+                        const distance = Math.min(time - marquee.lastTime, 50) * 0.025;
+                        const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+                        marquee.position += distance * marquee.direction;
+
+                        if (marquee.position >= maxScroll) {
+                            marquee.position = maxScroll;
+                            marquee.direction = -1;
+                        } else if (marquee.position <= 0) {
+                            marquee.position = 0;
+                            marquee.direction = 1;
+                        }
+
+                        scroller.scrollLeft = marquee.position;
+                        marquee.lastScrollLeft = scroller.scrollLeft;
+                    }
+
+                    marquee.lastTime = time;
+                    marquee.frameId = requestAnimationFrame(animate);
+                }
+
+                marquee.frameId = requestAnimationFrame(animate);
+            }
+
+            refs.grid.addEventListener("pointerover", (event) => {
+                if (event.pointerType !== "mouse" || !(event.target instanceof Element)) {
+                    return;
+                }
+
+                const container = event.target.closest(".movie-stars, .movie-directors");
+                if (container && !container.contains(event.relatedTarget)) {
+                    startMarquee(container);
+                }
+            });
+
+            refs.grid.addEventListener("pointerout", (event) => {
+                if (!(event.target instanceof Element)) {
+                    return;
+                }
+
+                const container = event.target.closest(".movie-stars, .movie-directors");
+                if (container && !container.contains(event.relatedTarget)) {
+                    stopMarquee(container);
+                }
+            });
+        }
+
         function wireTagEditors() {
             refs.grid.addEventListener("click", (event) => {
                 const target = event.target;
@@ -2040,6 +2134,7 @@
             wireMultiSelectControls();
             wireLetterMultiSelectControl();
             wireTagEditors();
+            wireCreditsMarquee();
             wireEvents();
             window.addTags = addTags;
             window.removeTags = removeTags;
